@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class SharedCode {
   final BuildContext context;
@@ -7,7 +8,10 @@ class SharedCode {
 
   //Api constants
 
-  static const String baseUrl = "https://project.banjarcode.com";
+  static const String baseUrl = "https://project.banjarcode.com/api";
+
+  //shared preferences constants
+  static const String authJson = 'authJson';
 
   static Widget buildPopUp(
       {required Widget child, required BuildContext context}) {
@@ -17,5 +21,14 @@ class SharedCode {
         child: child,
       ),
     );
+  }
+
+  static String convertToIdr(dynamic number, int decimalDigit) {
+    NumberFormat currencyFormatter = NumberFormat.currency(
+      locale: 'id',
+      symbol: 'Rp ',
+      decimalDigits: decimalDigit,
+    );
+    return currencyFormatter.format(number);
   }
 }

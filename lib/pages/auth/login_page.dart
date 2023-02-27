@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kasir/common/shared_code.dart';
+import 'package:kasir/pages/navigation/navigation.dart';
 import 'package:kasir/widget/perhatian_widget.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
@@ -25,6 +26,7 @@ class LoginPage extends StatelessWidget {
           }
           if (state is AuthSuccess) {
             context.loaderOverlay.hide();
+            return NavigationPage(auth: state.authModel);
           }
           if (state is AuthFailed) {
             context.loaderOverlay.hide();

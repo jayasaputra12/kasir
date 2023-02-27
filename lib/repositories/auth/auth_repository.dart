@@ -9,13 +9,17 @@ class AuthRepository implements BaseAuthRepository {
   Future<AuthModel> login(
       {required String email, required String password}) async {
     Map<String, dynamic> data = {'email': email, 'password': password};
-    final res = await http.post(Uri.parse("${SharedCode.baseUrl}/api/login"),
-        body: data);
+    final res =
+        await http.post(Uri.parse("${SharedCode.baseUrl}/login"), body: data);
 
     final auth = authModelFromJson(res.body);
 
     if (res.statusCode == 200) {
-      return auth;
+      if (auth.data!.user!.role == "kasir") {
+        return auth;
+      } else {
+        throw Exception('Anda bukan karyawan kasir');
+      }
     } else {
       throw Exception('User not found');
     }

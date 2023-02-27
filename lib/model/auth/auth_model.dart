@@ -72,8 +72,8 @@ class User {
     String? email;
     dynamic emailVerifiedAt;
     String? role;
-    String? telp;
-    String? address;
+    dynamic telp;
+    dynamic address;
     String? avatar;
     dynamic fcm;
     String? createdAt;
