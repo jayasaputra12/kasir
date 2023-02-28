@@ -13,7 +13,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<GetProductEvent>((event, emit) async {
       emit(ProductLoading());
       try {
-        final product = await _repository.getProduct();
+        final product = await _repository.getProduct(page: event.page);
         emit(ProductLoaded(product: product));
       } catch (e) {
         emit(ProductError(message: e.toString()));

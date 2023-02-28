@@ -5,8 +5,11 @@ import 'package:http/http.dart' as http;
 
 class ProductRepository implements BaseProductRepostirory {
   @override
-  Future<ProductModel> getProduct() async {
-    final res = await http.get(Uri.parse("${SharedCode.baseUrl}/getProduct"));
+  Future<ProductModel> getProduct({int? page}) async {
+    final res = await http
+        .get(Uri.parse("${SharedCode.baseUrl}/getProduct?page=$page"));
+
+    print("${SharedCode.baseUrl}/getProduct?page=$page");
 
     final product = productModelFromJson(res.body);
 
