@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:kasir/bloc/cart/cart_bloc.dart';
 import 'package:kasir/bloc/category/category_bloc.dart';
 import 'package:kasir/bloc/product/product_bloc.dart';
 import 'package:kasir/pages/splash/splash_screen.dart';
 import 'package:kasir/repositories/auth/auth_repository.dart';
+import 'package:kasir/repositories/cart/cart_repository.dart';
 import 'package:kasir/repositories/category/category_repository.dart';
 import 'package:kasir/repositories/product/product_repository.dart';
 import 'package:kasir/services/shared_preferences_services.dart';
@@ -39,6 +41,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<ProductBloc>(
           create: (context) => ProductBloc(ProductRepository()),
         ),
+        BlocProvider<CartBloc>(
+          create: (context) => CartBloc(CartRepository()),
+        )
       ],
       child: Sizer(
         builder: (context, orientation, deviceType) {

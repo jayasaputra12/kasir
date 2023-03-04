@@ -5,17 +5,21 @@ import 'package:kasir/bloc/category/category_bloc.dart';
 import 'package:kasir/bloc/product/product_bloc.dart';
 import 'package:kasir/model/auth/auth_model.dart';
 import 'package:kasir/model/product/product_model.dart';
+import 'package:kasir/model/transaction/create_transaksi_model.dart';
+import 'package:kasir/pages/navigation/cart/cart_page.dart';
 import 'package:kasir/pages/product/detail_product.dart';
+import 'package:kasir/repositories/cart/cart_repository.dart';
 import 'package:kasir/repositories/product/product_repository.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../widget/category_card.dart';
-import '../../../widget/header_dashboard.dart';
 import '../../../widget/product_card.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({this.auth, super.key});
+  HomePage({this.auth, this.transaksi, super.key});
   AuthModel? auth;
+  DataTransaksi? transaksi;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -26,17 +30,18 @@ class _HomePageState extends State<HomePage> {
   List<Datum>? listProduct;
   int totalPages = 0;
   bool _isLoading = false;
+  int _totalItems = 0;
   ScrollController scrollController = ScrollController();
   bool onNotification(ScrollNotification scrollNotification) {
     if (scrollNotification is ScrollUpdateNotification) {
-      if (scrollController.position.maxScrollExtent > scrollController.offset &&
+      if (scrollController.position.pixels >=
+              scrollController.position.maxScrollExtent &&
           scrollController.position.maxScrollExtent - scrollController.offset <=
-              50) {
+              10) {
         setState(() {
           _isLoading = true;
           currentPage += 1;
           ProductRepository().getProduct(page: currentPage).then((response) {
-            print('halaman sekarang: $currentPage');
             if (response != null) {
               if (currentPage >= response.data!.lastPage!) {
                 setState(() {
@@ -55,6 +60,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    CartRepository().getCart(transaksiId: widget.transaksi!.id!).then((value) {
+      var qtyLength = value.data!.map((e) => e.quantity).length;
+      setState(() {
+        _totalItems = qtyLength;
+      });
+    });
     ProductRepository().getProduct(page: currentPage).then((response) {
       if (response != null) {
         setState(() {
@@ -83,8 +94,6 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HeaderDashboard(auth: widget.auth),
-                const SizedBox(height: 20),
                 Text(
                   "Category",
                   style: GoogleFonts.poppins(
@@ -98,6 +107,7 @@ class _HomePageState extends State<HomePage> {
                   child: BlocBuilder<CategoryBloc, CategoryState>(
                     builder: (context, state) {
                       if (state is CategoryInitial) {
+                        context.loaderOverlay.hide();
                         BlocProvider.of<CategoryBloc>(context)
                             .add(GetCategoryEvent());
                       }
@@ -181,7 +191,24 @@ class _HomePageState extends State<HomePage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => DetailProductPage(
-                                        data: listProduct![index]),
+                                      transaksi: widget.transaksi,
+                                      data: listProduct![index],
+                                      auth: widget.auth,
+                                      refresh: () {
+                                        CartRepository()
+                                            .getCart(
+                                                transaksiId:
+                                                    widget.transaksi!.id!)
+                                            .then((value) {
+                                          var qtyLength = value.data!
+                                              .map((e) => e.quantity)
+                                              .length;
+                                          setState(() {
+                                            _totalItems = qtyLength;
+                                          });
+                                        });
+                                      },
+                                    ),
                                   ),
                                 );
                               },
@@ -241,6 +268,62 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CartPage(
+                  auth: widget.auth,
+                  transaksi: widget.transaksi,
+                ),
+              ));
+        },
+        child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            decoration: BoxDecoration(
+              color: Colors.yellow,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.shopping_cart,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      "Total Item",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  "${_totalItems} Item",
+                  style: GoogleFonts.poppins(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                )
+              ],
+            )),
       ),
     );
   }

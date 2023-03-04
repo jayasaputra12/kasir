@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kasir/model/auth/auth_model.dart';
 import 'package:kasir/pages/auth/login_page.dart';
+import 'package:kasir/pages/dashboard/dashboard_page.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../services/shared_preferences_services.dart';
@@ -55,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => NavigationPage(
+              builder: (context) => DashboardPage(
                 auth: auth,
               ),
             ),

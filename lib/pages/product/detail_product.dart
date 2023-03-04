@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kasir/common/shared_code.dart';
 import 'package:kasir/model/product/product_model.dart';
+import 'package:kasir/model/transaction/create_transaksi_model.dart';
+import 'package:kasir/repositories/cart/cart_repository.dart';
 import 'package:kasir/widget/barcode_widge.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../model/auth/auth_model.dart';
+
 class DetailProductPage extends StatefulWidget {
-  DetailProductPage({this.data, super.key});
+  DetailProductPage(
+      {this.data, this.auth, this.transaksi, this.refresh, super.key});
   Datum? data;
+  DataTransaksi? transaksi;
+  AuthModel? auth;
+  Function? refresh;
 
   @override
   State<DetailProductPage> createState() => _DetailProductPageState();
@@ -29,8 +37,12 @@ class _DetailProductPageState extends State<DetailProductPage> {
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: const BackButton(
+        leading: BackButton(
           color: Colors.black,
+          onPressed: () {
+            Navigator.pop(context);
+            widget.refresh!();
+          },
         ),
         title: Text(
           'Detail Porduct',
@@ -238,30 +250,75 @@ class _DetailProductPageState extends State<DetailProductPage> {
                 ),
               ),
               const SizedBox(height: 10),
-              Container(
-                height: 15.w,
-                width: width,
-                decoration: BoxDecoration(
-                  color: Colors.yellow,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.shopping_cart,
-                      color: Colors.black,
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      "Tambah ke Keranjang",
-                      style: GoogleFonts.poppins(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xff3D3D3D),
+              InkWell(
+                onTap: () {
+                  if (widget.data!.stock![0].quantity == "0") {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        duration: Duration(milliseconds: 500),
+                        content: Text("Stok Habis"),
+                        backgroundColor: Colors.red,
                       ),
-                    ),
-                  ],
+                    );
+                    return;
+                  } else {
+                    CartRepository()
+                        .addCart(
+                            productId: widget.data!.id!,
+                            userId: widget.auth!.data!.user!.id!,
+                            transaksiId: widget.transaksi!.id!,
+                            quantity: _qty)
+                        .then((value) => {
+                              if (value.meta!.code == 200)
+                                {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      duration:
+                                          const Duration(milliseconds: 500),
+                                      content: Text(value.meta!.message!),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  ),
+                                }
+                              else
+                                {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      duration:
+                                          const Duration(milliseconds: 500),
+                                      content: Text(value.meta!.message!),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  ),
+                                }
+                            });
+                  }
+                },
+                child: Container(
+                  height: 15.w,
+                  width: width,
+                  decoration: BoxDecoration(
+                    color: Colors.yellow,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.shopping_cart,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        "Tambah ke Keranjang",
+                        style: GoogleFonts.poppins(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff3D3D3D),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

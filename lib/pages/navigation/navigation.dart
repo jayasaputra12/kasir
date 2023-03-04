@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kasir/model/auth/auth_model.dart';
+import 'package:kasir/pages/navigation/cart/cart_page.dart';
 
 import '../../cubit/navbar_cubit.dart';
 import 'home/home_page.dart';
@@ -87,8 +88,8 @@ class NavigationPage extends StatelessWidget {
           auth: auth,
         );
       case 1:
-        return const Center(
-          child: Text('Cart'),
+        return CartPage(
+          auth: auth,
         );
       case 2:
         return const Center(
