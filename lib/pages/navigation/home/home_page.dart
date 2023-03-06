@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kasir/bloc/category/category_bloc.dart';
-import 'package:kasir/bloc/product/product_bloc.dart';
 import 'package:kasir/model/auth/auth_model.dart';
 import 'package:kasir/model/product/product_model.dart';
 import 'package:kasir/model/transaction/create_transaksi_model.dart';
 import 'package:kasir/pages/navigation/cart/cart_page.dart';
+import 'package:kasir/pages/product/all_product.dart';
 import 'package:kasir/pages/product/detail_product.dart';
 import 'package:kasir/repositories/cart/cart_repository.dart';
 import 'package:kasir/repositories/product/product_repository.dart';
+import 'package:kasir/widget/textfield_search.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../widget/category_card.dart';
+import '../../../widget/header_dashboard.dart';
 import '../../../widget/product_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -82,28 +84,32 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    context.loaderOverlay.hide();
     return Scaffold(
       body: SafeArea(
         child: NotificationListener(
-          onNotification: onNotification,
+          // onNotification: onNotification,
           child: SingleChildScrollView(
             controller: scrollController,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                HeaderDashboard(auth: widget.auth),
+                const SizedBox(height: 30),
                 Text(
-                  "Category",
-                  style: GoogleFonts.poppins(
+                  "Kategori",
+                  style: GoogleFonts.inter(
                     fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 10),
                 Container(
-                  height: 45.w,
+                  height: 30.w,
                   child: BlocBuilder<CategoryBloc, CategoryState>(
                     builder: (context, state) {
                       if (state is CategoryInitial) {
@@ -114,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                       if (state is CategoryLoading) {
                         return const Center(
                           child: CircularProgressIndicator(
-                            color: Colors.yellow,
+                            color: Color(0xff1B9C42),
                           ),
                         );
                       }
@@ -125,8 +131,22 @@ class _HomePageState extends State<HomePage> {
                           scrollDirection: Axis.horizontal,
                           itemCount: listCategory.length,
                           itemBuilder: (context, index) {
-                            return CategoryCard(
-                              data: listCategory[index],
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AllProduct(
+                                      auth: widget.auth,
+                                      transaksi: widget.transaksi,
+                                      category: listCategory[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: CategoryCard(
+                                data: listCategory[index],
+                              ),
                             );
                           },
                         );
@@ -134,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                       return Center(
                         child: Text(
                           "Category tidak ada",
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
                           ),
@@ -144,24 +164,70 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(height: 20),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AllProduct(
+                            auth: widget.auth, transaksi: widget.transaksi),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: 55,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: const Color(0xff97969E),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        const Icon(
+                          Icons.search,
+                          color: Color(0xff97969E),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          "Cari Produk",
+                          style: GoogleFonts.inter(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xff97969E),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       "Product",
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AllProduct(
+                                transaksi: widget.transaksi, auth: widget.auth),
+                          ),
+                        );
+                      },
                       child: Text(
                         "Lihat Semua",
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
-                          color: Colors.blue,
+                          color: const Color(0xff1B9C42),
                         ),
                       ),
                     ),
@@ -174,15 +240,22 @@ class _HomePageState extends State<HomePage> {
                     if (snapshot.data == null) {
                       return const Center(
                         child: CircularProgressIndicator(
-                          color: Colors.yellow,
+                          color: Color(0xff1B9C42),
                         ),
                       );
                     }
                     if (snapshot.hasData) {
                       if (listProduct != null) {
-                        return ListView.builder(
+                        return GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 15,
+                            mainAxisSpacing: 5,
+                            childAspectRatio: 138 / 300,
+                          ),
                           itemCount: listProduct!.length,
                           itemBuilder: (context, index) {
                             return InkWell(
@@ -219,14 +292,14 @@ class _HomePageState extends State<HomePage> {
                       } else {
                         return const Center(
                             child: CircularProgressIndicator(
-                          color: Colors.yellow,
+                          color: Color(0xff1B9C42),
                         ));
                       }
                     } else if (snapshot.hasError) {
                       return Center(
                         child: Text(
                           "Product tidak ada",
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
                           ),
@@ -236,94 +309,38 @@ class _HomePageState extends State<HomePage> {
                         ConnectionState.waiting) {
                       return const Center(
                         child: CircularProgressIndicator(
-                          color: Colors.yellow,
+                          color: Color(0xff1B9C42),
                         ),
                       );
                     }
                     return const Center(
                       child: CircularProgressIndicator(
-                        color: Colors.yellow,
+                        color: Color(0xff1B9C42),
                       ),
                     );
                   },
                 ),
                 const SizedBox(height: 20),
-                if (_isLoading)
-                  const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.black,
-                    ),
-                  )
-                else
-                  Center(
-                    child: Text(
-                      "Tidak ada lagi product",
-                      style: GoogleFonts.poppins(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
+                // if (_isLoading)
+                //   const Center(
+                //     child: CircularProgressIndicator(
+                //       color: Colors.black,
+                //     ),
+                //   )
+                // else
+                //   Center(
+                //     child: Text(
+                //       "Tidak ada lagi product",
+                //       style: GoogleFonts.inter(
+                //         fontSize: 12.sp,
+                //         fontWeight: FontWeight.w400,
+                //       ),
+                //     ),
+                //   ),
               ],
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: InkWell(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CartPage(
-                  auth: widget.auth,
-                  transaksi: widget.transaksi,
-                ),
-              ));
-        },
-        child: Container(
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            decoration: BoxDecoration(
-              color: Colors.yellow,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 1,
-                  blurRadius: 7,
-                  offset: const Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.shopping_cart,
-                      color: Colors.black,
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      "Total Item",
-                      style: GoogleFonts.poppins(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-                Text(
-                  "${_totalItems} Item",
-                  style: GoogleFonts.poppins(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                )
-              ],
-            )),
       ),
     );
   }

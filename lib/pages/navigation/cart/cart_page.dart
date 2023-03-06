@@ -37,7 +37,7 @@ class _CartPageState extends State<CartPage> {
         ),
         title: Text(
           'Cart',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 12.sp,
             fontWeight: FontWeight.w600,
             color: const Color(0xff3D3D3D),
@@ -65,7 +65,7 @@ class _CartPageState extends State<CartPage> {
                     const SizedBox(height: 40),
                     Text(
                       'Cart is Empty',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w600,
                         color: const Color(0xff3D3D3D),

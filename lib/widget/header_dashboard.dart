@@ -9,63 +9,94 @@ class HeaderDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 15.w,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset('assets/images/pic.png')),
-              ),
-              const SizedBox(width: 15),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Text(
-                    auth!.data!.user!.name ?? "",
-                    style: GoogleFonts.poppins(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
+                  Container(
+                    width: 15.w,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
                     ),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset('assets/images/pic.png')),
                   ),
-                  Text(
-                    auth!.data!.user!.role ?? "",
-                    style: GoogleFonts.poppins(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
+                  const SizedBox(width: 15),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        auth!.data!.user!.name ?? "",
+                        style: GoogleFonts.inter(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        auth!.data!.user!.role ?? "",
+                        style: GoogleFonts.inter(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
+              Row(
+                children: [
+                  Image.asset(
+                    'assets/images/keranjang.png',
+                    width: 8.w,
+                    color: const Color(0xff595BD4),
+                  ),
+                  const SizedBox(width: 20),
+                  Image.asset(
+                    'assets/images/riwayat.png',
+                    width: 8.w,
+                    color: const Color(0xff595BD4),
+                  ),
+                ],
+              )
             ],
           ),
         ),
+        const SizedBox(height: 23),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Uang Kas",
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
+                color: const Color(0xff97969E),
               ),
             ),
             const SizedBox(height: 5),
-            Text(
-              "Rp. 1.000.000",
-              style: GoogleFonts.poppins(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
-              ),
+            Row(
+              children: [
+                Image.asset(
+                  'assets/images/kas.png',
+                  width: 8.w,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  "Rp. 1.000.000",
+                  style: GoogleFonts.inter(
+                    fontSize: 12.sp,
+                    color: const Color(0xff1B9C42),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

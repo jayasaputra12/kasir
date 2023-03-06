@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
             useDefaultLoading: false,
             overlayWidget: Center(
               child: SpinKitCubeGrid(
-                color: Color(0xffFFC700),
+                color: Color(0xff1B9C42),
                 size: 50.0,
               ),
             ),

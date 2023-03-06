@@ -63,7 +63,7 @@ class _CartProductCardState extends State<CartProductCard> {
                 children: [
                   Text(
                     "${widget.cart!.nameProduct}",
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w600,
                       color: const Color(0xff3D3D3D),
@@ -73,7 +73,7 @@ class _CartProductCardState extends State<CartProductCard> {
                     children: [
                       Text(
                         "${widget.qty} items",
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 12.sp,
                           color: const Color(0xff8D92A3),
                         ),
@@ -82,7 +82,7 @@ class _CartProductCardState extends State<CartProductCard> {
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: Text(
                           "•",
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 12.sp,
                             color: const Color(0xff8D92A3),
                           ),
@@ -90,7 +90,7 @@ class _CartProductCardState extends State<CartProductCard> {
                       ),
                       Text(
                         "${SharedCode.convertToIdr(int.parse(widget.qty.toString()) * int.parse(widget.cart!.priceUnit.toString()), 0)}",
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 12.sp,
                           color: const Color(0xff8D92A3),
                         ),
@@ -146,7 +146,7 @@ class _CartProductCardState extends State<CartProductCard> {
                         const SizedBox(width: 15),
                         Text(
                           widget.qty.toString(),
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 10.sp,
                             fontWeight: FontWeight.w600,
                             color: const Color(0xff3D3D3D),

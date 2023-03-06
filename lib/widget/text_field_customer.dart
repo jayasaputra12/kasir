@@ -29,7 +29,7 @@ class _TextFieldCustomState extends State<TextFieldCustom> {
         children: [
           Text(
             widget.label ?? "",
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 14.sp,
               fontWeight: FontWeight.w400,
               color: const Color(0xff020202),
@@ -55,7 +55,7 @@ class _TextFieldCustomState extends State<TextFieldCustom> {
                     )
                   : null,
               hintText: "",
-              hintStyle: GoogleFonts.poppins(
+              hintStyle: GoogleFonts.inter(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w300,
                 color: const Color(0xff8D92A3),

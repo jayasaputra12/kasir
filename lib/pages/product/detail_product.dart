@@ -24,110 +24,218 @@ class DetailProductPage extends StatefulWidget {
 class _DetailProductPageState extends State<DetailProductPage> {
   int _qty = 1;
   int _hargaAwal = 0;
+
   @override
   Widget build(BuildContext context) {
-    String penjualan = widget.data!.penjualan![0].terjual.toString();
-    String quantity = widget.data!.stock![0].quantity.toString();
     int hargaAwal = int.parse(widget.data!.priceUnit!);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xff1B9C42),
         elevation: 0,
         leading: BackButton(
-          color: Colors.black,
+          color: Colors.white,
           onPressed: () {
             Navigator.pop(context);
-            widget.refresh!();
           },
         ),
-        title: Text(
-          'Detail Porduct',
-          style: GoogleFonts.poppins(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xff3D3D3D),
-          ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Detail Porduct',
+              style: GoogleFonts.inter(
+                fontSize: 12.sp,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              'ini adalah halaman detail product',
+              style: GoogleFonts.inter(
+                fontSize: 10.sp,
+                color: Colors.white,
+              ),
+            ),
+          ],
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+              onPressed: () {},
+              icon: Image.asset(
+                'assets/images/keranjang.png',
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             widget.data!.photoProduct != null
-                ? Image.network(widget.data!.photoProduct!)
+                ? Image.network(
+                    widget.data!.photoProduct!,
+                    width: width,
+                    height: height * 0.35,
+                    fit: BoxFit.cover,
+                  )
                 : Image.asset(
                     'assets/images/category.png',
                     width: width,
                     height: height * 0.35,
                     fit: BoxFit.cover,
                   ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.data!.nameProduct ?? "",
-                      style: GoogleFonts.poppins(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xff3D3D3D),
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      "${widget.data!.category!.nameCategory} / ${quantity.toString()} Stok Tesisa / ${penjualan.toString()} Terjual",
-                      style: GoogleFonts.poppins(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xff3D3D3D),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => BarcodeWidget(
-                          data: widget.data,
-                        ),
-                      );
-                    },
-                    child: Image.asset(
-                      'assets/images/barcode.png',
-                      width: 10.w,
-                      color: Colors.black,
-                    ),
+            Container(
+              height: 31,
+              decoration: const BoxDecoration(
+                color: Color(0xff1B9C42),
+              ),
+              child: Center(
+                child: Text(
+                  "KATEGORI - ${widget.data!.category!.nameCategory}",
+                  style: GoogleFonts.inter(
+                    fontSize: 10.sp,
+                    color: Colors.white,
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Text(
-              "Deskripsi",
-              style: GoogleFonts.poppins(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xff3D3D3D),
               ),
             ),
-            const SizedBox(height: 5),
-            Text(
-              widget.data!.description ?? "",
-              style: GoogleFonts.poppins(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w400,
-                color: const Color(0xff3D3D3D),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.data!.priceUnit != null
+                                ? SharedCode.convertToIdr(
+                                    int.parse(widget.data!.priceUnit!), 0)
+                                : "",
+                            style: GoogleFonts.inter(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff1B9C42),
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            widget.data!.nameProduct ?? "",
+                            style: GoogleFonts.inter(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff3D3D3D),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => BarcodeWidget(
+                                data: widget.data,
+                              ),
+                            );
+                          },
+                          child: Image.asset(
+                            'assets/images/barcode.png',
+                            width: 10.w,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Product Terjual",
+                    style: GoogleFonts.inter(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xff3D3D3D),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    "Terjual ${widget.data!.penjualan![0].terjual} Product",
+                    style: GoogleFonts.inter(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff97969E),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Stock Produk",
+                    style: GoogleFonts.inter(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xff3D3D3D),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    "Stock Produk ${widget.data!.stock![0].quantity}",
+                    style: GoogleFonts.inter(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff97969E),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Harga Modal",
+                    style: GoogleFonts.inter(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xff3D3D3D),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    widget.data!.priceUnit != null
+                        ? SharedCode.convertToIdr(
+                            int.parse(widget.data!.priceUnit!), 0)
+                        : "",
+                    style: GoogleFonts.inter(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff97969E),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Deskripsi",
+                    style: GoogleFonts.inter(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xff3D3D3D),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    widget.data!.description ?? "",
+                    style: GoogleFonts.inter(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff3D3D3D),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
             ),
           ],
@@ -164,7 +272,7 @@ class _DetailProductPageState extends State<DetailProductPage> {
                         children: [
                           Text(
                             "Harga",
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w400,
                               color: const Color(0xff3D3D3D),
@@ -173,12 +281,12 @@ class _DetailProductPageState extends State<DetailProductPage> {
                           const SizedBox(height: 5),
                           Text(
                             _hargaAwal == 0
-                                ? "${SharedCode.convertToIdr(hargaAwal, 0)}"
-                                : "${SharedCode.convertToIdr(_hargaAwal, 0)}",
-                            style: GoogleFonts.poppins(
+                                ? SharedCode.convertToIdr(hargaAwal, 0)
+                                : SharedCode.convertToIdr(_hargaAwal, 0),
+                            style: GoogleFonts.inter(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w600,
-                              color: const Color(0xff3D3D3D),
+                              color: const Color(0xff1B9C42),
                             ),
                           ),
                         ],
@@ -200,12 +308,12 @@ class _DetailProductPageState extends State<DetailProductPage> {
                             height: 10.w,
                             width: 10.w,
                             decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: const Color(0xff1B9C42),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Icon(
                               Icons.remove,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -214,8 +322,8 @@ class _DetailProductPageState extends State<DetailProductPage> {
                           width: 5.w,
                           child: Center(
                             child: Text(
-                              "${_qty.toString()}",
-                              style: GoogleFonts.poppins(
+                              _qty.toString(),
+                              style: GoogleFonts.inter(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w600,
                                 color: const Color(0xff3D3D3D),
@@ -235,12 +343,12 @@ class _DetailProductPageState extends State<DetailProductPage> {
                             height: 10.w,
                             width: 10.w,
                             decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: const Color(0xff1B9C42),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Icon(
                               Icons.add,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -298,7 +406,7 @@ class _DetailProductPageState extends State<DetailProductPage> {
                   height: 15.w,
                   width: width,
                   decoration: BoxDecoration(
-                    color: Colors.yellow,
+                    color: const Color(0xff1B9C42),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
@@ -306,15 +414,15 @@ class _DetailProductPageState extends State<DetailProductPage> {
                     children: [
                       const Icon(
                         Icons.shopping_cart,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                       const SizedBox(width: 10),
                       Text(
                         "Tambah ke Keranjang",
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xff3D3D3D),
+                          color: Colors.white,
                         ),
                       ),
                     ],

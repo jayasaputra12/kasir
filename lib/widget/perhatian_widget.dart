@@ -27,7 +27,7 @@ class AttentionPop extends StatelessWidget {
               const SizedBox(height: 26),
               Text(
                 title ?? "Perhatian",
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                   color: Color(0xff393E46),
@@ -37,7 +37,7 @@ class AttentionPop extends StatelessWidget {
               const SizedBox(height: 15),
               Text(
                 message ?? "",
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff393E46),

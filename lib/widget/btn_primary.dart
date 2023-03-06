@@ -27,7 +27,7 @@ class BtnPrimary extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           txtBtn!,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 14.sp,
             color: Colors.black,
             fontWeight: FontWeight.w600,

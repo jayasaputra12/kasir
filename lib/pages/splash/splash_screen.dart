@@ -28,19 +28,23 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffFFC700),
+      backgroundColor: const Color(0xff1B9C42),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset("assets/images/splash.svg", height: 15.h),
+            SvgPicture.asset(
+              "assets/images/splash.svg",
+              height: 15.h,
+              color: Colors.white,
+            ),
             const SizedBox(height: 30),
             Text(
               'CashApp',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 30.sp,
                 fontWeight: FontWeight.w500,
-                color: const Color(0xff020202),
+                color: Colors.white,
               ),
             ),
           ],

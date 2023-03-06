@@ -48,7 +48,7 @@ class LoginPage extends StatelessWidget {
                 children: [
                   Text(
                     "Login",
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w500,
                       color: const Color(0xff020202),
@@ -56,7 +56,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   Text(
                     "Silahkan Login untuk memulai",
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w300,
                       color: const Color(0xff8D92A3),

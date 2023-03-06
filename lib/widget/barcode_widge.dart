@@ -35,7 +35,7 @@ class BarcodeWidget extends StatelessWidget {
                     const SizedBox(height: 26),
                     Text(
                       "Perhatian",
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: Color(0xff393E46),
@@ -45,7 +45,7 @@ class BarcodeWidget extends StatelessWidget {
                     const SizedBox(height: 15),
                     Text(
                       "Barocode Tidak Ada",
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                         color: Color(0xff393E46),
