@@ -13,8 +13,15 @@ class CartLoading extends CartState {}
 
 class CartLoaded extends CartState {
   final GetCartModel getCartModel;
+  final int totalBayar;  
 
-  CartLoaded({required this.getCartModel});
+  CartLoaded({required this.getCartModel, this.totalBayar = 0});
+}
+
+class CartTotalBayar extends CartState {
+  final int totalBayar;
+
+  CartTotalBayar({required this.totalBayar});
 }
 
 class CartError extends CartState {

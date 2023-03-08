@@ -1,5 +1,6 @@
 import 'package:kasir/common/shared_code.dart';
 import 'package:kasir/model/cart/add_cart_model.dart';
+import 'package:kasir/model/cart/detele_cart_model.dart';
 import 'package:kasir/model/cart/get_cart_model.dart';
 import 'package:kasir/model/cart/update_cart_model.dart';
 import 'package:kasir/repositories/cart/base_cart_repository.dart';
@@ -44,8 +45,8 @@ class CartRepository implements BaseCartRepository {
   }
 
   Future<AddCartModel> deleteCart({required int id}) async {
-    final res = await http
-        .post(Uri.parse("${SharedCode.baseUrl}/deleteCart/$id"));
+    final res =
+        await http.post(Uri.parse("${SharedCode.baseUrl}/deleteCart/$id"));
 
     if (res.statusCode == 200) {
       return addCartModelFromJson(res.body);
@@ -60,6 +61,18 @@ class CartRepository implements BaseCartRepository {
 
     if (res.statusCode == 200) {
       return getCartModelFromJson(res.body);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<DeleteCartModel> deleteCartByTransaksiId(
+      {required int transaksiId}) async {
+    final res = await http.post(
+        Uri.parse("${SharedCode.baseUrl}/deleteByTransaksi/$transaksiId"));
+
+    if (res.statusCode == 200) {
+      return deleteCartModelFromJson(res.body);
     } else {
       throw Exception('Failed to load data');
     }

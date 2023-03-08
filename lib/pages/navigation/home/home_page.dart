@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HeaderDashboard(auth: widget.auth),
+                HeaderDashboard(auth: widget.auth, transaksi: widget.transaksi),
                 const SizedBox(height: 30),
                 Text(
                   "Kategori",

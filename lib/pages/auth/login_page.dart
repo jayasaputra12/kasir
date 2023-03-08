@@ -11,6 +11,7 @@ import 'package:sizer/sizer.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../widget/btn_primary.dart';
 import '../../widget/text_field_customer.dart';
+import '../dashboard/dashboard_page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -26,7 +27,7 @@ class LoginPage extends StatelessWidget {
           }
           if (state is AuthSuccess) {
             context.loaderOverlay.hide();
-            return NavigationPage(auth: state.authModel);
+            return DashboardPage(auth: state.authModel);
           }
           if (state is AuthFailed) {
             context.loaderOverlay.hide();

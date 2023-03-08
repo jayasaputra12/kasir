@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class SharedCode {
@@ -30,5 +34,27 @@ class SharedCode {
       decimalDigits: decimalDigit,
     );
     return currencyFormatter.format(number);
+  }
+
+  //addImage function
+  static Future<File?> addImage() async {
+    final ImagePicker picker = ImagePicker();
+    final File imagePicked = File(
+        (await picker.pickImage(source: ImageSource.gallery, imageQuality: 50))!
+            .path);
+    CroppedFile? file = await ImageCropper().cropImage(
+      sourcePath: imagePicked.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9,
+      ],
+      uiSettings: [
+        IOSUiSettings(title: 'Cropper'),
+      ],
+    );
+    return File(file!.path);
   }
 }

@@ -3,9 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kasir/model/auth/auth_model.dart';
 import 'package:sizer/sizer.dart';
 
+import '../model/transaction/create_transaksi_model.dart';
+import '../pages/navigation/cart/cart_page.dart';
+
 class HeaderDashboard extends StatelessWidget {
-  HeaderDashboard({this.auth, super.key});
+  HeaderDashboard({this.auth, this.transaksi,super.key});
   AuthModel? auth;
+  DataTransaksi? transaksi;
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +57,23 @@ class HeaderDashboard extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Image.asset(
-                    'assets/images/keranjang.png',
-                    width: 8.w,
-                    color: const Color(0xff595BD4),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CartPage(
+                            auth:auth,
+                            transaksi: transaksi,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Image.asset(
+                      'assets/images/keranjang.png',
+                      width: 8.w,
+                      color: const Color(0xff595BD4),
+                    ),
                   ),
                   const SizedBox(width: 20),
                   Image.asset(

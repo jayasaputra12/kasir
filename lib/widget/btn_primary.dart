@@ -19,7 +19,7 @@ class BtnPrimary extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xffFFC700),
+          backgroundColor: const Color(0xff1B9C42),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -29,7 +29,7 @@ class BtnPrimary extends StatelessWidget {
           txtBtn!,
           style: GoogleFonts.inter(
             fontSize: 14.sp,
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.w600,
           ),
         ),

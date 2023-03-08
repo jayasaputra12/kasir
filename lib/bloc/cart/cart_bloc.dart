@@ -14,7 +14,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       try {
         GetCartModel getCartModel =
             await _repository.getCart(transaksiId: event.transaksiId);
-        emit(CartLoaded(getCartModel: getCartModel));
+        emit(CartLoaded(
+            getCartModel: getCartModel,
+            //total bayar * qty
+            totalBayar: getCartModel.data!
+                .map((e) =>
+                    int.parse(e.productId!.priceUnit!) * int.parse(e.quantity!))
+                .reduce((value, element) => value + element)));
       } catch (e) {
         emit(CartError(message: e.toString()));
       }

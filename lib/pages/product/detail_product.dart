@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kasir/common/shared_code.dart';
 import 'package:kasir/model/product/product_model.dart';
 import 'package:kasir/model/transaction/create_transaksi_model.dart';
+import 'package:kasir/pages/navigation/cart/cart_page.dart';
 import 'package:kasir/repositories/cart/cart_repository.dart';
 import 'package:kasir/widget/barcode_widge.dart';
 import 'package:sizer/sizer.dart';
@@ -64,7 +65,17 @@ class _DetailProductPageState extends State<DetailProductPage> {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CartPage(
+                      auth: widget.auth,
+                      transaksi: widget.transaksi,
+                    ),
+                  ),
+                );
+              },
               icon: Image.asset(
                 'assets/images/keranjang.png',
                 color: Colors.white,
