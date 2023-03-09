@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kasir/bloc/product/product_bloc.dart';
 import 'package:kasir/model/category/category_model.dart';
+import 'package:kasir/pages/navigation/home/home_page.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../common/shared_code.dart';
 import '../../model/auth/auth_model.dart';
 import '../../model/product/product_model.dart';
 import '../../model/transaction/create_transaksi_model.dart';
@@ -148,7 +151,50 @@ class _AllProductState extends State<AllProduct> {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                SharedCode.scanBarcode().then(
+                  (value) => {
+                    if (value != null)
+                      {
+                        context.loaderOverlay.show(),
+                        ProductRepository()
+                            .getProductbyCodeUnique(codeUnique: value)
+                            .then((value) => {
+                                  if (value.meta!.code == 200)
+                                    {
+                                      context.loaderOverlay.hide(),
+                                      CartRepository().addCart(
+                                          productId:
+                                              value.data!.data!.first.id!,
+                                          userId: widget.auth!.data!.user!.id!,
+                                          transaksiId: widget.transaksi!.id!,
+                                          quantity: 1),
+                                    }
+                                  else
+                                    {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text(value.meta!.message!),
+                                      ))
+                                    }
+                                }),
+                        if (value == "-1")
+                          {
+                            context.loaderOverlay.hide(),
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomePage(
+                                    auth: widget.auth,
+                                    transaksi: widget.transaksi,
+                                  ),
+                                ),
+                                (route) => false)
+                          }
+                      }
+                  },
+                );
+              },
               icon: const Icon(
                 Icons.qr_code_scanner,
                 size: 30,

@@ -154,6 +154,7 @@ class _CartPageState extends State<CartPage> {
                 MaterialPageRoute(
                   builder: (context) => CheckoutPage(
                     transaksi: widget.transaksi,
+                    auth: widget.auth,
                   ),
                 ));
           },

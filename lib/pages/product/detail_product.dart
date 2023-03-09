@@ -12,11 +12,17 @@ import '../../model/auth/auth_model.dart';
 
 class DetailProductPage extends StatefulWidget {
   DetailProductPage(
-      {this.data, this.auth, this.transaksi, this.refresh, super.key});
+      {this.data,
+      this.auth,
+      this.transaksi,
+      this.refresh,
+      this.isDashboard = false,
+      super.key});
   Datum? data;
   DataTransaksi? transaksi;
   AuthModel? auth;
   Function? refresh;
+  bool isDashboard;
 
   @override
   State<DetailProductPage> createState() => _DetailProductPageState();
@@ -28,6 +34,7 @@ class _DetailProductPageState extends State<DetailProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.isDashboard);
     int hargaAwal = int.parse(widget.data!.priceUnit!);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -61,28 +68,30 @@ class _DetailProductPageState extends State<DetailProductPage> {
             ),
           ],
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CartPage(
-                      auth: widget.auth,
-                      transaksi: widget.transaksi,
+        actions: widget.isDashboard
+            ? []
+            : [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CartPage(
+                            auth: widget.auth,
+                            transaksi: widget.transaksi,
+                          ),
+                        ),
+                      );
+                    },
+                    icon: Image.asset(
+                      'assets/images/keranjang.png',
+                      color: Colors.white,
                     ),
                   ),
-                );
-              },
-              icon: Image.asset(
-                'assets/images/keranjang.png',
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
+                ),
+              ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -252,198 +261,202 @@ class _DetailProductPageState extends State<DetailProductPage> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        height: 35.w,
-        width: width,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 7,
-              offset: const Offset(0, 3), // changes position of shadow
-            ),
-          ],
-        ),
-        child: Padding(
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 10),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      bottomNavigationBar: widget.isDashboard
+          ? null
+          : Container(
+              height: 35.w,
+              width: width,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 20, right: 20, bottom: 5, top: 10),
+                child: Column(
                   children: [
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            "Harga",
-                            style: GoogleFonts.inter(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color: const Color(0xff3D3D3D),
+                          Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Harga",
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: const Color(0xff3D3D3D),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  _hargaAwal == 0
+                                      ? SharedCode.convertToIdr(hargaAwal, 0)
+                                      : SharedCode.convertToIdr(_hargaAwal, 0),
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xff1B9C42),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          const SizedBox(height: 5),
-                          Text(
-                            _hargaAwal == 0
-                                ? SharedCode.convertToIdr(hargaAwal, 0)
-                                : SharedCode.convertToIdr(_hargaAwal, 0),
-                            style: GoogleFonts.inter(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xff1B9C42),
-                            ),
+                          const SizedBox(width: 20),
+                          Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    if (_qty > 1) {
+                                      _qty--;
+                                      _hargaAwal = _qty * hargaAwal;
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  height: 10.w,
+                                  width: 10.w,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff1B9C42),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Icon(
+                                    Icons.remove,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 15),
+                              Container(
+                                width: 5.w,
+                                child: Center(
+                                  child: Text(
+                                    _qty.toString(),
+                                    style: GoogleFonts.inter(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xff3D3D3D),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 15),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _qty++;
+                                    _hargaAwal = _qty * hargaAwal;
+                                  });
+                                },
+                                child: Container(
+                                  height: 10.w,
+                                  width: 10.w,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff1B9C42),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(width: 20),
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              if (_qty > 1) {
-                                _qty--;
-                                _hargaAwal = _qty * hargaAwal;
-                              }
-                            });
-                          },
-                          child: Container(
-                            height: 10.w,
-                            width: 10.w,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff1B9C42),
-                              borderRadius: BorderRadius.circular(10),
+                    const SizedBox(height: 10),
+                    InkWell(
+                      onTap: () {
+                        if (widget.data!.stock![0].quantity == "0") {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              duration: Duration(milliseconds: 500),
+                              content: Text("Stok Habis"),
+                              backgroundColor: Colors.red,
                             ),
-                            child: const Icon(
-                              Icons.remove,
+                          );
+                          return;
+                        } else {
+                          CartRepository()
+                              .addCart(
+                                  productId: widget.data!.id!,
+                                  userId: widget.auth!.data!.user!.id!,
+                                  transaksiId: widget.transaksi!.id!,
+                                  quantity: _qty)
+                              .then((value) => {
+                                    if (value.meta!.code == 200)
+                                      {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            duration: const Duration(
+                                                milliseconds: 500),
+                                            content: Text(value.meta!.message!),
+                                            backgroundColor: Colors.green,
+                                          ),
+                                        ),
+                                      }
+                                    else
+                                      {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            duration: const Duration(
+                                                milliseconds: 500),
+                                            content: Text(value.meta!.message!),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        ),
+                                      }
+                                  });
+                        }
+                      },
+                      child: Container(
+                        height: 15.w,
+                        width: width,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff1B9C42),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.shopping_cart,
                               color: Colors.white,
                             ),
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        Container(
-                          width: 5.w,
-                          child: Center(
-                            child: Text(
-                              _qty.toString(),
+                            const SizedBox(width: 10),
+                            Text(
+                              "Tambah ke Keranjang",
                               style: GoogleFonts.inter(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w600,
-                                color: const Color(0xff3D3D3D),
+                                color: Colors.white,
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                        const SizedBox(width: 15),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              _qty++;
-                              _hargaAwal = _qty * hargaAwal;
-                            });
-                          },
-                          child: Container(
-                            height: 10.w,
-                            width: 10.w,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff1B9C42),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
-              InkWell(
-                onTap: () {
-                  if (widget.data!.stock![0].quantity == "0") {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        duration: Duration(milliseconds: 500),
-                        content: Text("Stok Habis"),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                    return;
-                  } else {
-                    CartRepository()
-                        .addCart(
-                            productId: widget.data!.id!,
-                            userId: widget.auth!.data!.user!.id!,
-                            transaksiId: widget.transaksi!.id!,
-                            quantity: _qty)
-                        .then((value) => {
-                              if (value.meta!.code == 200)
-                                {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      duration:
-                                          const Duration(milliseconds: 500),
-                                      content: Text(value.meta!.message!),
-                                      backgroundColor: Colors.green,
-                                    ),
-                                  ),
-                                }
-                              else
-                                {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      duration:
-                                          const Duration(milliseconds: 500),
-                                      content: Text(value.meta!.message!),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  ),
-                                }
-                            });
-                  }
-                },
-                child: Container(
-                  height: 15.w,
-                  width: width,
-                  decoration: BoxDecoration(
-                    color: const Color(0xff1B9C42),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.shopping_cart,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        "Tambah ke Keranjang",
-                        style: GoogleFonts.inter(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

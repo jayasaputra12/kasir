@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -56,5 +58,17 @@ class SharedCode {
       ],
     );
     return File(file!.path);
+  }
+
+  //scan Barcode
+  static Future<String?> scanBarcode() async {
+    String? barcodeScanRes;
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.BARCODE);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+    return barcodeScanRes;
   }
 }

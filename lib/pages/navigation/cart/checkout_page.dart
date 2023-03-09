@@ -2,19 +2,25 @@ import 'package:dropdown_search2/dropdown_search2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:kasir/common/shared_code.dart';
 import 'package:kasir/model/customer/get_customer_model.dart';
+import 'package:kasir/pages/transaksi/transaki_page.dart';
 import 'package:kasir/repositories/customer/customer_repository.dart';
+import 'package:kasir/repositories/product/product_repository.dart';
+import 'package:kasir/repositories/report/report_repository.dart';
 import 'package:kasir/widget/btn_primary.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../model/auth/auth_model.dart';
 import '../../../model/transaction/create_transaksi_model.dart';
 import '../../../repositories/cart/cart_repository.dart';
 import '../../../widget/card_product_transaksi.dart';
 
 class CheckoutPage extends StatefulWidget {
-  CheckoutPage({this.transaksi, super.key});
+  CheckoutPage({this.transaksi, this.auth, super.key});
   DataTransaksi? transaksi;
+  final AuthModel? auth;
 
   @override
   State<CheckoutPage> createState() => _CheckoutPageState();
@@ -28,6 +34,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   bool _tempo = false;
   int _uangKembali = 0;
   int _totalHarga = 0;
+  DateTime now = DateTime.now();
 
   @override
   void initState() {
@@ -438,7 +445,85 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   const SizedBox(height: 20),
                   BtnPrimary(
                     txtBtn: "Bayar Sekarang",
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_uangCustomer.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Uang customer tidak boleh kosong'),
+                          ),
+                        );
+                      } else {
+                        if (_uangKembali < 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Uang customer tidak cukup'),
+                            ),
+                          );
+                        } else {
+                          if (_chas) {
+                            CartRepository()
+                                .getCart(transaksiId: widget.transaksi!.id!)
+                                .then((value) {
+                              value.data!.forEach((element) {
+                                ReportRepository().createReportCash(
+                                  idTransaksi: widget.transaksi!.id!.toString(),
+                                  payment: "CHAS",
+                                  paymentTerm: DateFormat('dd-MM-yyyy')
+                                      .format(now)
+                                      .toString(),
+                                  productId: element.productId!.id!.toString(),
+                                  quantitySale: element.quantity!,
+                                );
+                                ReportRepository().updateStok(
+                                  idProduct: element.productId!.id!.toString(),
+                                  decrease: element.quantity!.toString(),
+                                );
+                                ReportRepository().terjualStok(
+                                  idProduct: element.productId!.id!.toString(),
+                                  increase: element.quantity!.toString(),
+                                );
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TransaksiPage(
+                                      auth: widget.auth,
+                                    ),
+                                  ));
+                            }).catchError((e) {
+                              print(e);
+                            });
+                          } else {
+                            CartRepository()
+                                .getCart(transaksiId: widget.transaksi!.id!)
+                                .then((value) {
+                              value.data!.forEach((element) {
+                                ReportRepository().createReportTempo(
+                                  idTransaksi: widget.transaksi!.id!.toString(),
+                                  customerId: selectedCustomer!.id.toString(),
+                                  payment: "TEMPO",
+                                  paymentTerm: DateFormat('dd-MM-yyyy')
+                                      .format(now)
+                                      .toString(),
+                                  productId: element.productId!.id!.toString(),
+                                  quantitySale: element.quantity!,
+                                );
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TransaksiPage(
+                                      auth: widget.auth,
+                                    ),
+                                  ));
+                            }).catchError((e) {
+                              print(e);
+                            });
+                            ;
+                          }
+                        }
+                      }
+                    },
                   )
                 ],
               ),

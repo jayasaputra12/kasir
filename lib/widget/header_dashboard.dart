@@ -7,9 +7,11 @@ import '../model/transaction/create_transaksi_model.dart';
 import '../pages/navigation/cart/cart_page.dart';
 
 class HeaderDashboard extends StatelessWidget {
-  HeaderDashboard({this.auth, this.transaksi,super.key});
+  HeaderDashboard(
+      {this.auth, this.transaksi, this.isDashboard = false, super.key});
   AuthModel? auth;
   DataTransaksi? transaksi;
+  bool isDashboard;
 
   @override
   Widget build(BuildContext context) {
@@ -55,34 +57,36 @@ class HeaderDashboard extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CartPage(
-                            auth:auth,
-                            transaksi: transaksi,
+              isDashboard
+                  ? Container()
+                  : Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CartPage(
+                                  auth: auth,
+                                  transaksi: transaksi,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Image.asset(
+                            'assets/images/keranjang.png',
+                            width: 8.w,
+                            color: const Color(0xff595BD4),
                           ),
                         ),
-                      );
-                    },
-                    child: Image.asset(
-                      'assets/images/keranjang.png',
-                      width: 8.w,
-                      color: const Color(0xff595BD4),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Image.asset(
-                    'assets/images/riwayat.png',
-                    width: 8.w,
-                    color: const Color(0xff595BD4),
-                  ),
-                ],
-              )
+                        const SizedBox(width: 20),
+                        Image.asset(
+                          'assets/images/riwayat.png',
+                          width: 8.w,
+                          color: const Color(0xff595BD4),
+                        ),
+                      ],
+                    )
             ],
           ),
         ),
