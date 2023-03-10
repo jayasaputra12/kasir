@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kasir/pages/dashboard/dashboard_page.dart';
 import 'package:kasir/widget/btn_primary.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../model/auth/auth_model.dart';
@@ -10,9 +11,9 @@ class TransaksiPage extends StatelessWidget {
   const TransaksiPage({this.auth, super.key});
   final AuthModel? auth;
 
-
   @override
   Widget build(BuildContext context) {
+    context.loaderOverlay.hide();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -45,11 +46,15 @@ class TransaksiPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               BtnPrimary(
-                txtBtn:"Back to Home",
+                txtBtn: "Back to Home",
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardPage(
-                    auth: auth,
-                  ),));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DashboardPage(
+                          auth: auth,
+                        ),
+                      ));
                 },
               ),
             ],

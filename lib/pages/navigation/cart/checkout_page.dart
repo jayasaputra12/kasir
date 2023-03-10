@@ -10,6 +10,7 @@ import 'package:kasir/repositories/customer/customer_repository.dart';
 import 'package:kasir/repositories/product/product_repository.dart';
 import 'package:kasir/repositories/report/report_repository.dart';
 import 'package:kasir/widget/btn_primary.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../model/auth/auth_model.dart';
@@ -461,6 +462,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           );
                         } else {
                           if (_chas) {
+                            context.loaderOverlay.show();
                             CartRepository()
                                 .getCart(transaksiId: widget.transaksi!.id!)
                                 .then((value) {
@@ -494,6 +496,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               print(e);
                             });
                           } else {
+                            context.loaderOverlay.show();
                             CartRepository()
                                 .getCart(transaksiId: widget.transaksi!.id!)
                                 .then((value) {
