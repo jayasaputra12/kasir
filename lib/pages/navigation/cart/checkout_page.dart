@@ -475,6 +475,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                       .toString(),
                                   productId: element.productId!.id!.toString(),
                                   quantitySale: element.quantity!,
+                                  userId: widget.auth!.data!.user!.id!.toString(),
                                 );
                                 ReportRepository().updateStok(
                                   idProduct: element.productId!.id!.toString(),
@@ -510,6 +511,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                       .toString(),
                                   productId: element.productId!.id!.toString(),
                                   quantitySale: element.quantity!,
+                                    userId: widget.auth!.data!.user!.id!.toString(),
                                 );
                               });
                               Navigator.push(

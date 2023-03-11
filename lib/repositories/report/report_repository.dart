@@ -14,6 +14,7 @@ class ReportRepository implements BaseReportRepository {
     String? payment,
     String? paymentTerm,
     String? idTransaksi,
+    String? userId,
   }) async {
     final res = await http
         .post(Uri.parse("${SharedCode.baseUrl}/createReportPenjualan"), body: {
@@ -22,6 +23,7 @@ class ReportRepository implements BaseReportRepository {
       "payment": payment,
       "payment_term": paymentTerm,
       "id_transaksi": idTransaksi,
+      "user_id": userId,
     });
 
     final report = createReportPenjualanFromJson(res.body);
@@ -40,6 +42,7 @@ class ReportRepository implements BaseReportRepository {
     String? paymentTerm,
     String? idTransaksi,
     String? customerId,
+    String? userId,
   }) async {
     final res = await http
         .post(Uri.parse("${SharedCode.baseUrl}/createReportPenjualan"), body: {
@@ -49,6 +52,7 @@ class ReportRepository implements BaseReportRepository {
       "payment_term": paymentTerm,
       "id_transaksi": idTransaksi,
       "customer_id": customerId,
+      "user_id": userId,
     });
 
     final report = createReportPenjualanFromJson(res.body);
