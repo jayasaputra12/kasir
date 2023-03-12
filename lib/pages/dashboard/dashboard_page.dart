@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kasir/common/shared_code.dart';
 import 'package:kasir/model/auth/auth_model.dart';
+import 'package:kasir/pages/history/history_page.dart';
 import 'package:kasir/pages/navigation/home/home_page.dart';
 import 'package:kasir/pages/product/detail_product.dart';
 import 'package:kasir/repositories/product/product_repository.dart';
@@ -185,7 +186,16 @@ class DashboardPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HistoryPage(
+                            auth: auth,
+                          ),
+                        ),
+                      );
+                    },
                     child: Container(
                       width: 40.w,
                       height: 30.w,

@@ -467,7 +467,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 .getCart(transaksiId: widget.transaksi!.id!)
                                 .then((value) {
                               value.data!.forEach((element) {
-                                ReportRepository().createReportCash(
+                                ReportRepository()
+                                    .createReportCash(
                                   idTransaksi: widget.transaksi!.id!.toString(),
                                   payment: "CHAS",
                                   paymentTerm: DateFormat('dd-MM-yyyy')
@@ -475,8 +476,25 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                       .toString(),
                                   productId: element.productId!.id!.toString(),
                                   quantitySale: element.quantity!,
-                                  userId: widget.auth!.data!.user!.id!.toString(),
-                                );
+                                  userId:
+                                      widget.auth!.data!.user!.id!.toString(),
+                                )
+                                    .catchError((e) {
+                                  context.loaderOverlay.hide();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Gagal'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                });
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TransaksiPage(
+                                        auth: widget.auth,
+                                      ),
+                                    ));
                                 ReportRepository().updateStok(
                                   idProduct: element.productId!.id!.toString(),
                                   decrease: element.quantity!.toString(),
@@ -486,13 +504,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   increase: element.quantity!.toString(),
                                 );
                               });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => TransaksiPage(
-                                      auth: widget.auth,
-                                    ),
-                                  ));
                             }).catchError((e) {
                               print(e);
                             });
@@ -502,7 +513,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 .getCart(transaksiId: widget.transaksi!.id!)
                                 .then((value) {
                               value.data!.forEach((element) {
-                                ReportRepository().createReportTempo(
+                                ReportRepository()
+                                    .createReportTempo(
                                   idTransaksi: widget.transaksi!.id!.toString(),
                                   customerId: selectedCustomer!.id.toString(),
                                   payment: "TEMPO",
@@ -511,16 +523,34 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                       .toString(),
                                   productId: element.productId!.id!.toString(),
                                   quantitySale: element.quantity!,
-                                    userId: widget.auth!.data!.user!.id!.toString(),
+                                  userId:
+                                      widget.auth!.data!.user!.id!.toString(),
+                                )
+                                    .catchError((e) {
+                                  context.loaderOverlay.hide();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Gagal'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                });
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TransaksiPage(
+                                        auth: widget.auth,
+                                      ),
+                                    ));
+                                ReportRepository().updateStok(
+                                  idProduct: element.productId!.id!.toString(),
+                                  decrease: element.quantity!.toString(),
+                                );
+                                ReportRepository().terjualStok(
+                                  idProduct: element.productId!.id!.toString(),
+                                  increase: element.quantity!.toString(),
                                 );
                               });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => TransaksiPage(
-                                      auth: widget.auth,
-                                    ),
-                                  ));
                             }).catchError((e) {
                               print(e);
                             });
