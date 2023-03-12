@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kasir/model/transaction/create_transaksi_model.dart';
 import 'package:kasir/pages/customer/add_customer_page.dart';
@@ -8,10 +7,7 @@ import 'package:kasir/repositories/cart/cart_repository.dart';
 import 'package:kasir/widget/btn_primary.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
-
-import '../../../bloc/cart/cart_bloc.dart';
 import '../../../model/auth/auth_model.dart';
-import '../../../widget/bottom_cart_widget.dart';
 import '../../../widget/cart_product_card.dart';
 
 class CartPage extends StatefulWidget {

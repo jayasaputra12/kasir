@@ -63,6 +63,7 @@ class User {
     this.address,
     this.avatar,
     this.cabang,
+    this.priceKas,
     this.createdAt,
     this.updatedAt,
   });
@@ -76,6 +77,7 @@ class User {
   String? address;
   String? avatar;
   String? cabang;
+  String? priceKas;
   String? createdAt;
   String? updatedAt;
 
@@ -89,6 +91,7 @@ class User {
         address: json["address"],
         avatar: json["avatar"],
         cabang: json["cabang"],
+        priceKas: json["price_kas"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
       );
@@ -103,6 +106,7 @@ class User {
         "address": address,
         "avatar": avatar,
         "cabang": cabang,
+        "price_kas": priceKas,
         "created_at": createdAt,
         "updated_at": updatedAt,
       };
