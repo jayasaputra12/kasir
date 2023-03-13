@@ -135,6 +135,8 @@ class TransaksiId {
     this.id,
     this.idTransaksi,
     this.status,
+    this.imageReceipt,
+    this.description,
     this.createdAt,
     this.updatedAt,
   });
@@ -142,27 +144,29 @@ class TransaksiId {
   int? id;
   String? idTransaksi;
   String? status;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+  String? imageReceipt;
+  dynamic description;
+  String? createdAt;
+  String? updatedAt;
 
   factory TransaksiId.fromJson(Map<String, dynamic> json) => TransaksiId(
         id: json["id"],
         idTransaksi: json["id_transaksi"],
         status: json["status"],
-        createdAt: json["created_at"] == null
-            ? null
-            : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null
-            ? null
-            : DateTime.parse(json["updated_at"]),
+        imageReceipt: json["image_receipt"],
+        description: json["description"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "id_transaksi": idTransaksi,
         "status": status,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
+        "image_receipt": imageReceipt,
+        "description": description,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
       };
 }
 
@@ -176,7 +180,8 @@ class UserId {
     this.telp,
     this.address,
     this.avatar,
-    this.fcm,
+    this.cabang,
+    this.priceKas,
     this.createdAt,
     this.updatedAt,
   });
@@ -189,7 +194,8 @@ class UserId {
   String? telp;
   String? address;
   String? avatar;
-  dynamic fcm;
+  dynamic cabang;
+  String? priceKas;
   String? createdAt;
   String? updatedAt;
 
@@ -202,7 +208,8 @@ class UserId {
         telp: json["telp"],
         address: json["address"],
         avatar: json["avatar"],
-        fcm: json["fcm"],
+        cabang: json["cabang"],
+        priceKas: json["price_kas"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
       );
@@ -216,7 +223,8 @@ class UserId {
         "telp": telp,
         "address": address,
         "avatar": avatar,
-        "fcm": fcm,
+        "cabang": cabang,
+        "price_kas": priceKas,
         "created_at": createdAt,
         "updated_at": updatedAt,
       };
