@@ -35,6 +35,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   bool _tempo = false;
   int _uangKembali = 0;
   int _totalHarga = 0;
+  int? _idPenjualan;
   DateTime now = DateTime.now();
 
   @override
@@ -471,7 +472,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                     .createReportCash(
                                   idTransaksi: widget.transaksi!.id!.toString(),
                                   payment: "CHAS",
-                                  paymentTerm: DateFormat('EEEE, dd MMMM yyyy')
+                                  paymentTerm: DateFormat('yyyy-MM-dd')
                                       .format(now)
                                       .toString(),
                                   productId: element.productId!.id!.toString(),
@@ -488,6 +489,16 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                     ),
                                   );
                                 });
+                                ReportRepository().updateStok(
+                                  idProduct: element.productId!.stock![0].id
+                                      .toString(),
+                                  decrease: element.quantity!.toString(),
+                                );
+                                ReportRepository().terjualStok(
+                                  idProduct: element.productId!.penjualan![0].id
+                                      .toString(),
+                                  increase: element.quantity!.toString(),
+                                );
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -495,14 +506,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                         auth: widget.auth,
                                       ),
                                     ));
-                                ReportRepository().updateStok(
-                                  idProduct: element.productId!.id!.toString(),
-                                  decrease: element.quantity!.toString(),
-                                );
-                                ReportRepository().terjualStok(
-                                  idProduct: element.productId!.id!.toString(),
-                                  increase: element.quantity!.toString(),
-                                );
                               });
                             }).catchError((e) {
                               print(e);
@@ -520,7 +523,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   idTransaksi: widget.transaksi!.id!.toString(),
                                   customerId: selectedCustomer!.id.toString(),
                                   payment: "TEMPO",
-                                  paymentTerm: DateFormat('EEEE, dd MMMM yyyy')
+                                  paymentTerm: DateFormat('yyyy-MM-dd')
                                       .format(now)
                                       .toString(),
                                   productId: element.productId!.id!.toString(),
@@ -537,6 +540,16 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                     ),
                                   );
                                 });
+                                ReportRepository().updateStok(
+                                  idProduct: element.productId!.stock![0].id
+                                      .toString(),
+                                  decrease: element.quantity!.toString(),
+                                );
+                                ReportRepository().terjualStok(
+                                  idProduct: element.productId!.penjualan![0].id
+                                      .toString(),
+                                  increase: element.quantity!.toString(),
+                                );
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -544,14 +557,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                         auth: widget.auth,
                                       ),
                                     ));
-                                ReportRepository().updateStok(
-                                  idProduct: element.productId!.id!.toString(),
-                                  decrease: element.quantity!.toString(),
-                                );
-                                ReportRepository().terjualStok(
-                                  idProduct: element.productId!.id!.toString(),
-                                  increase: element.quantity!.toString(),
-                                );
                               });
                             }).catchError((e) {
                               print(e);

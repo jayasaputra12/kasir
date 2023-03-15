@@ -4,68 +4,60 @@
 
 import 'dart:convert';
 
-GetCartModel getCartModelFromJson(String str) =>
-    GetCartModel.fromJson(json.decode(str));
+GetCartModel getCartModelFromJson(String str) => GetCartModel.fromJson(json.decode(str));
 
 String getCartModelToJson(GetCartModel data) => json.encode(data.toJson());
 
 class GetCartModel {
-  GetCartModel({
-    this.meta,
-    this.data,
-  });
+    GetCartModel({
+        this.meta,
+        this.data,
+    });
 
-  Meta? meta;
-  List<Datum>? data;
+    Meta? meta;
+    List<Datum>? data;
 
-  factory GetCartModel.fromJson(Map<String, dynamic> json) => GetCartModel(
+    factory GetCartModel.fromJson(Map<String, dynamic> json) => GetCartModel(
         meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-        data: json["data"] == null
-            ? []
-            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
-      );
+        data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "meta": meta?.toJson(),
-        "data": data == null
-            ? []
-            : List<dynamic>.from(data!.map((x) => x.toJson())),
-      };
+        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    };
 }
 
 class Datum {
-  Datum({
-    this.id,
-    this.productId,
-    this.userId,
-    this.transaksiId,
-    this.quantity,
-    this.createdAt,
-    this.updatedAt,
-  });
+    Datum({
+        this.id,
+        this.productId,
+        this.userId,
+        this.transaksiId,
+        this.quantity,
+        this.createdAt,
+        this.updatedAt,
+    });
 
-  int? id;
-  ProductId? productId;
-  UserId? userId;
-  String? transaksiId;
-  String? quantity;
-  String? createdAt;
-  String? updatedAt;
+    int? id;
+    ProductId? productId;
+    UserId? userId;
+    String? transaksiId;
+    String? quantity;
+    String? createdAt;
+    String? updatedAt;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
-        productId: json["product_id"] == null
-            ? null
-            : ProductId.fromJson(json["product_id"]),
-        userId:
-            json["user_id"] == null ? null : UserId.fromJson(json["user_id"]),
+        productId: json["product_id"] == null ? null : ProductId.fromJson(json["product_id"]),
+        userId: json["user_id"] == null ? null : UserId.fromJson(json["user_id"]),
         transaksiId: json["transaksi_id"],
         quantity: json["quantity"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
-      );
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "id": id,
         "product_id": productId?.toJson(),
         "user_id": userId?.toJson(),
@@ -73,37 +65,41 @@ class Datum {
         "quantity": quantity,
         "created_at": createdAt,
         "updated_at": updatedAt,
-      };
+    };
 }
 
 class ProductId {
-  ProductId({
-    this.id,
-    this.categoryId,
-    this.nameProduct,
-    this.priceUnit,
-    this.priceModal,
-    this.photoProduct,
-    this.description,
-    this.codeUnique,
-    this.photoBarcode,
-    this.createdAt,
-    this.updatedAt,
-  });
+    ProductId({
+        this.id,
+        this.categoryId,
+        this.nameProduct,
+        this.priceUnit,
+        this.priceModal,
+        this.photoProduct,
+        this.description,
+        this.codeUnique,
+        this.photoBarcode,
+        this.createdAt,
+        this.updatedAt,
+        this.penjualan,
+        this.stock,
+    });
 
-  int? id;
-  String? categoryId;
-  String? nameProduct;
-  String? priceUnit;
-  String? priceModal;
-  String? photoProduct;
-  String? description;
-  String? codeUnique;
-  String? photoBarcode;
-  String? createdAt;
-  String? updatedAt;
+    int? id;
+    String? categoryId;
+    String? nameProduct;
+    String? priceUnit;
+    String? priceModal;
+    String? photoProduct;
+    String? description;
+    String? codeUnique;
+    String? photoBarcode;
+    String? createdAt;
+    String? updatedAt;
+    List<Penjualan>? penjualan;
+    List<Penjualan>? stock;
 
-  factory ProductId.fromJson(Map<String, dynamic> json) => ProductId(
+    factory ProductId.fromJson(Map<String, dynamic> json) => ProductId(
         id: json["id"],
         categoryId: json["category_id"],
         nameProduct: json["name_product"],
@@ -115,9 +111,11 @@ class ProductId {
         photoBarcode: json["photo_barcode"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
-      );
+        penjualan: json["penjualan"] == null ? [] : List<Penjualan>.from(json["penjualan"]!.map((x) => Penjualan.fromJson(x))),
+        stock: json["stock"] == null ? [] : List<Penjualan>.from(json["stock"]!.map((x) => Penjualan.fromJson(x))),
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "id": id,
         "category_id": categoryId,
         "name_product": nameProduct,
@@ -129,39 +127,77 @@ class ProductId {
         "photo_barcode": photoBarcode,
         "created_at": createdAt,
         "updated_at": updatedAt,
-      };
+        "penjualan": penjualan == null ? [] : List<dynamic>.from(penjualan!.map((x) => x.toJson())),
+        "stock": stock == null ? [] : List<dynamic>.from(stock!.map((x) => x.toJson())),
+    };
+}
+
+class Penjualan {
+    Penjualan({
+        this.id,
+        this.productId,
+        this.terjual,
+        this.createdAt,
+        this.updatedAt,
+        this.quantity,
+    });
+
+    int? id;
+    String? productId;
+    String? terjual;
+    String? createdAt;
+    String? updatedAt;
+    String? quantity;
+
+    factory Penjualan.fromJson(Map<String, dynamic> json) => Penjualan(
+        id: json["id"],
+        productId: json["product_id"],
+        terjual: json["terjual"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        quantity: json["quantity"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "product_id": productId,
+        "terjual": terjual,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "quantity": quantity,
+    };
 }
 
 class UserId {
-  UserId({
-    this.id,
-    this.name,
-    this.email,
-    this.emailVerifiedAt,
-    this.role,
-    this.telp,
-    this.address,
-    this.avatar,
-    this.cabang,
-    this.priceKas,
-    this.createdAt,
-    this.updatedAt,
-  });
+    UserId({
+        this.id,
+        this.name,
+        this.email,
+        this.emailVerifiedAt,
+        this.role,
+        this.telp,
+        this.address,
+        this.avatar,
+        this.cabang,
+        this.priceKas,
+        this.createdAt,
+        this.updatedAt,
+    });
 
-  int? id;
-  String? name;
-  String? email;
-  dynamic emailVerifiedAt;
-  String? role;
-  String? telp;
-  String? address;
-  String? avatar;
-  dynamic cabang;
-  dynamic priceKas;
-  String? createdAt;
-  String? updatedAt;
+    int? id;
+    String? name;
+    String? email;
+    dynamic emailVerifiedAt;
+    String? role;
+    String? telp;
+    String? address;
+    String? avatar;
+    String? cabang;
+    String? priceKas;
+    String? createdAt;
+    String? updatedAt;
 
-  factory UserId.fromJson(Map<String, dynamic> json) => UserId(
+    factory UserId.fromJson(Map<String, dynamic> json) => UserId(
         id: json["id"],
         name: json["name"],
         email: json["email"],
@@ -174,9 +210,9 @@ class UserId {
         priceKas: json["price_kas"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
-      );
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "email": email,
@@ -189,29 +225,29 @@ class UserId {
         "price_kas": priceKas,
         "created_at": createdAt,
         "updated_at": updatedAt,
-      };
+    };
 }
 
 class Meta {
-  Meta({
-    this.code,
-    this.status,
-    this.message,
-  });
+    Meta({
+        this.code,
+        this.status,
+        this.message,
+    });
 
-  int? code;
-  String? status;
-  String? message;
+    int? code;
+    String? status;
+    String? message;
 
-  factory Meta.fromJson(Map<String, dynamic> json) => Meta(
+    factory Meta.fromJson(Map<String, dynamic> json) => Meta(
         code: json["code"],
         status: json["status"],
         message: json["message"],
-      );
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "code": code,
         "status": status,
         "message": message,
-      };
+    };
 }

@@ -84,6 +84,7 @@ class ReportRepository implements BaseReportRepository {
 
   Future<TerjualModelStok> terjualStok(
       {String? idProduct, String? increase}) async {
+    print("idProduct: $idProduct");
     final res = await http.post(
         Uri.parse("${SharedCode.baseUrl}/updatePenjualanCashier/$idProduct"),
         body: {
