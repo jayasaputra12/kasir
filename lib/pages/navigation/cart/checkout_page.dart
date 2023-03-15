@@ -471,7 +471,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                     .createReportCash(
                                   idTransaksi: widget.transaksi!.id!.toString(),
                                   payment: "CHAS",
-                                  paymentTerm: DateFormat('dd-MM-yyyy')
+                                  paymentTerm: DateFormat('EEEE, dd MMMM yyyy')
                                       .format(now)
                                       .toString(),
                                   productId: element.productId!.id!.toString(),
@@ -507,6 +507,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             }).catchError((e) {
                               print(e);
                             });
+                            // print(
+                            //     "tanggal :${DateFormat('EEEE, dd MMMM yyyy').format(now)}");
                           } else {
                             context.loaderOverlay.show();
                             CartRepository()
@@ -518,7 +520,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   idTransaksi: widget.transaksi!.id!.toString(),
                                   customerId: selectedCustomer!.id.toString(),
                                   payment: "TEMPO",
-                                  paymentTerm: DateFormat('dd-MM-yyyy')
+                                  paymentTerm: DateFormat('EEEE, dd MMMM yyyy')
                                       .format(now)
                                       .toString(),
                                   productId: element.productId!.id!.toString(),

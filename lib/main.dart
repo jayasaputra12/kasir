@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:intl/date_symbol_data_file.dart';
 import 'package:kasir/bloc/cart/cart_bloc.dart';
 import 'package:kasir/bloc/category/category_bloc.dart';
 import 'package:kasir/bloc/product/product_bloc.dart';
