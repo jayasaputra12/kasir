@@ -221,13 +221,16 @@ class DashboardPage extends StatelessWidget {
                             width: 10.w,
                           ),
                           const SizedBox(height: 10),
-                          Text(
-                            'History Transaksi',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: const Color(0xff252E4E),
+                          Expanded(
+                            child: Text(
+                              'History Transaksi',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: const Color(0xff252E4E),
+                              ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),

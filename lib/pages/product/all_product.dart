@@ -296,7 +296,7 @@ class _AllProductState extends State<AllProduct> {
                               crossAxisCount: 2,
                               crossAxisSpacing: 15,
                               mainAxisSpacing: 5,
-                              childAspectRatio: 138 / 300,
+                              childAspectRatio: 135 / 300,
                             ),
                             itemCount: listProduct!.length,
                             itemBuilder: (context, index) {
