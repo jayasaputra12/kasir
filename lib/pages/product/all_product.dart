@@ -49,13 +49,18 @@ class _AllProductState extends State<AllProduct> {
                   .getProduct(page: currentPage)
                   .then((response) {
                   if (response != null) {
-                    if (currentPage >= response.data!.lastPage!) {
-                      setState(() {
-                        listProduct!.addAll(response.data!.data!);
-                        currentPage = response.data!.lastPage!;
-                        _isLoading = false;
-                      });
-                    }
+                    setState(() {
+                      listProduct!.addAll(response.data!.data!);
+                      currentPage = response.data!.lastPage!;
+                      _isLoading = false;
+                    });
+                    // if (currentPage >= response.data!.lastPage!) {
+                    //   setState(() {
+                    //     listProduct!.addAll(response.data!.data!);
+                    //     currentPage = response.data!.lastPage!;
+                    //     _isLoading = false;
+                    //   });
+                    // }
                   }
                 })
               : ProductRepository()
@@ -63,13 +68,18 @@ class _AllProductState extends State<AllProduct> {
                       categoryId: widget.category!.id, page: currentPage)
                   .then((response) {
                   if (response != null) {
-                    if (currentPage >= response.data!.lastPage!) {
-                      setState(() {
-                        listProduct!.addAll(response.data!.data!);
-                        currentPage = response.data!.lastPage!;
-                        _isLoading = false;
-                      });
-                    }
+                    setState(() {
+                      listProduct!.addAll(response.data!.data!);
+                      currentPage = response.data!.lastPage!;
+                      _isLoading = false;
+                    });
+                    // if (currentPage >= response.data!.lastPage!) {
+                    //   setState(() {
+                    //     listProduct!.addAll(response.data!.data!);
+                    //     currentPage = response.data!.lastPage!;
+                    //     _isLoading = false;
+                    //   });
+                    // }
                   }
                 });
         });
