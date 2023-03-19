@@ -39,7 +39,7 @@ class ProductRepository implements BaseProductRepostirory {
   Future<ProductModel> getProductbyName(
       {String? productName, int? page}) async {
     final res = await http.get(Uri.parse(
-        "${SharedCode.baseUrl}/getProduct?name_product=$productName&page=$page"));
+        "${SharedCode.baseUrl}/getProduct?name_product=$productName&page=1"));
 
     final product = productModelFromJson(res.body);
 

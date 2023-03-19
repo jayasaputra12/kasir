@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kasir/bloc/product/product_bloc.dart';
 import 'package:kasir/model/category/category_model.dart';
 import 'package:kasir/pages/navigation/home/home_page.dart';
@@ -28,6 +29,7 @@ class AllProduct extends StatefulWidget {
 }
 
 class _AllProductState extends State<AllProduct> {
+  static const _pageSize = 20;
   int currentPage = 1;
   List<Datum>? listProduct;
   int totalPages = 0;
@@ -35,20 +37,20 @@ class _AllProductState extends State<AllProduct> {
   int _totalItems = 0;
   ScrollController scrollController = ScrollController();
   bool onNotification(ScrollNotification scrollNotification) {
-    print(currentPage);
     if (scrollNotification is ScrollUpdateNotification) {
-      if (scrollController.position.pixels >=
-              scrollController.position.maxScrollExtent &&
+      if (scrollController.position.maxScrollExtent > scrollController.offset &&
           scrollController.position.maxScrollExtent - scrollController.offset <=
-              10) {
+              50) {
+        currentPage += 1;
+        print("current page $currentPage");
         setState(() {
           _isLoading = true;
-          currentPage += 1;
+
           widget.category?.id == null
               ? ProductRepository()
                   .getProduct(page: currentPage)
                   .then((response) {
-                  if (response != null) {
+                  if (response.data!.data!.isNotEmpty) {
                     setState(() {
                       listProduct!.addAll(response.data!.data!);
                       currentPage = response.data!.lastPage!;
@@ -61,13 +63,17 @@ class _AllProductState extends State<AllProduct> {
                     //     _isLoading = false;
                     //   });
                     // }
+                  } else {
+                    setState(() {
+                      _isLoading = false;
+                    });
                   }
                 })
               : ProductRepository()
                   .getProductbyCategory(
                       categoryId: widget.category!.id, page: currentPage)
                   .then((response) {
-                  if (response != null) {
+                  if (response.data!.data!.isNotEmpty) {
                     setState(() {
                       listProduct!.addAll(response.data!.data!);
                       currentPage = response.data!.lastPage!;
@@ -80,6 +86,10 @@ class _AllProductState extends State<AllProduct> {
                     //     _isLoading = false;
                     //   });
                     // }
+                  } else {
+                    setState(() {
+                      _isLoading = false;
+                    });
                   }
                 });
         });
@@ -121,6 +131,7 @@ class _AllProductState extends State<AllProduct> {
 
   @override
   void dispose() {
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -260,7 +271,7 @@ class _AllProductState extends State<AllProduct> {
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 15,
                                   mainAxisSpacing: 5,
-                                  childAspectRatio: 138 / 300,
+                                  childAspectRatio: 135 / 300,
                                 ),
                                 itemCount: product.length,
                                 itemBuilder: (context, index) {
