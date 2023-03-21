@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kasir/bloc/category/category_bloc.dart';
 import 'package:kasir/model/auth/auth_model.dart';
+import 'package:kasir/model/category/category_model.dart';
 import 'package:kasir/model/product/product_model.dart';
 import 'package:kasir/model/transaction/create_transaksi_model.dart';
 import 'package:kasir/pages/dashboard/dashboard_page.dart';
 import 'package:kasir/pages/navigation/cart/cart_page.dart';
 import 'package:kasir/pages/product/all_product.dart';
+import 'package:kasir/pages/product/all_product_new.dart';
 import 'package:kasir/pages/product/detail_product.dart';
 import 'package:kasir/repositories/cart/cart_repository.dart';
+import 'package:kasir/repositories/category/category_repository.dart';
 import 'package:kasir/repositories/product/product_repository.dart';
 import 'package:kasir/widget/textfield_search.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -64,7 +68,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     CartRepository().getCart(transaksiId: widget.transaksi!.id!).then((value) {
-      var qtyLength = value.data!.map((e) => e.quantity).length;
+      var qtyLength = value.data!.data!.map((e) => e.quantity).length;
       setState(() {
         _totalItems = qtyLength;
       });
@@ -92,7 +96,6 @@ class _HomePageState extends State<HomePage> {
     context.loaderOverlay.hide();
     return WillPopScope(
       onWillPop: () {
-        print("masuk pak zae");
         return backToHome();
       },
       child: Scaffold(
@@ -133,19 +136,29 @@ class _HomePageState extends State<HomePage> {
                         }
                         if (state is CategoryLoaded) {
                           var listCategory =
-                              state.category.data!.map((e) => e).toList();
+                              state.category.data!.data!.map((e) => e).toList();
                           return ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: listCategory.length,
                             itemBuilder: (context, index) {
                               return InkWell(
                                 onTap: () {
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  // builder: (context) => AllProduct(
+                                  //   auth: widget.auth,
+                                  //   transaksi: widget.transaksi,
+                                  //   category: listCategory[index],
+                                  // ),
+                                  //   ),
+                                  // );
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => AllProduct(
-                                        auth: widget.auth,
+                                      builder: (context) => NewAllProduct(
                                         transaksi: widget.transaksi,
+                                        auth: widget.auth,
                                         category: listCategory[index],
                                       ),
                                     ),
@@ -173,13 +186,21 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: 20),
                   InkWell(
                     onTap: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => AllProduct(
+                      //         auth: widget.auth, transaksi: widget.transaksi),
+                      //   ),
+                      // );
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AllProduct(
-                              auth: widget.auth, transaksi: widget.transaksi),
-                        ),
-                      );
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewAllProduct(
+                              transaksi: widget.transaksi,
+                              auth: widget.auth,
+                            ),
+                          ));
                     },
                     child: Container(
                       height: 55,
@@ -221,14 +242,19 @@ class _HomePageState extends State<HomePage> {
                       ),
                       InkWell(
                         onTap: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => AllProduct(
+                          //         transaksi: widget.transaksi,
+                          //         auth: widget.auth),
+                          //   ),
+                          // );
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AllProduct(
-                                  transaksi: widget.transaksi,
-                                  auth: widget.auth),
-                            ),
-                          );
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NewAllProduct(),
+                              ));
                         },
                         child: Text(
                           "Lihat Semua",
@@ -282,7 +308,7 @@ class _HomePageState extends State<HomePage> {
                                                       widget.transaksi!.id!)
                                               .then((value) {
                                             var qtyLength = value.data!
-                                                .map((e) => e.quantity)
+                                                .data!.map((e) => e.quantity)
                                                 .length;
                                             setState(() {
                                               _totalItems = qtyLength;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kasir/bloc/product/product_bloc.dart';
 import 'package:kasir/model/category/category_model.dart';
 import 'package:kasir/pages/navigation/home/home_page.dart';
@@ -40,7 +39,7 @@ class _AllProductState extends State<AllProduct> {
     if (scrollNotification is ScrollUpdateNotification) {
       if (scrollController.position.maxScrollExtent > scrollController.offset &&
           scrollController.position.maxScrollExtent - scrollController.offset <=
-              50) {
+              50 ) {
         currentPage += 1;
         print("current page $currentPage");
         setState(() {
@@ -101,7 +100,7 @@ class _AllProductState extends State<AllProduct> {
   @override
   void initState() {
     CartRepository().getCart(transaksiId: widget.transaksi!.id!).then((value) {
-      var qtyLength = value.data!.map((e) => e.quantity).length;
+      var qtyLength = value.data!.data!.map((e) => e.quantity).length;
       setState(() {
         _totalItems = qtyLength;
       });
@@ -292,7 +291,7 @@ class _AllProductState extends State<AllProduct> {
                                                           widget.transaksi!.id!)
                                                   .then((value) {
                                                 var qtyLength = value.data!
-                                                    .map((e) => e.quantity)
+                                                    .data!.map((e) => e.quantity)
                                                     .length;
                                                 setState(() {
                                                   _totalItems = qtyLength;
@@ -337,7 +336,7 @@ class _AllProductState extends State<AllProduct> {
                                                       widget.transaksi!.id!)
                                               .then((value) {
                                             var qtyLength = value.data!
-                                                .map((e) => e.quantity)
+                                                .data!.map((e) => e.quantity)
                                                 .length;
                                             setState(() {
                                               _totalItems = qtyLength;

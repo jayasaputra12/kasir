@@ -17,7 +17,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         emit(CartLoaded(
             getCartModel: getCartModel,
             //total bayar * qty
-            totalBayar: getCartModel.data!
+            totalBayar: getCartModel.data!.data!
                 .map((e) =>
                     int.parse(e.productId!.priceUnit!) * int.parse(e.quantity!))
                 .reduce((value, element) => value + element)));

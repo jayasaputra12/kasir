@@ -97,6 +97,8 @@ class ProductCard extends StatelessWidget {
                     color: const Color(0xff8D92A3),
                     fontWeight: FontWeight.w400,
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
                 const SizedBox(height: 5),
                 Text(

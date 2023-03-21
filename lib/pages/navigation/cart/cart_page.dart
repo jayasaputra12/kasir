@@ -104,15 +104,15 @@ class _CartPageState extends State<CartPage> {
                   return ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: snapshot.data!.data!.length,
+                    itemCount: snapshot.data!.data!.data!.length,
                     itemBuilder: (context, index) {
                       // total = int.parse(snapshot
                       //         .data!.data![index].productId!.priceUnit!) *
                       //     int.parse(snapshot.data!.data![index].quantity!);
                       return CartProductCard(
-                        cart: snapshot.data!.data![index].productId,
-                        qty: snapshot.data!.data![index].quantity,
-                        id: snapshot.data!.data![index].id,
+                        cart: snapshot.data!.data!.data![index].productId,
+                        qty: snapshot.data!.data!.data![index].quantity,
+                        id: snapshot.data!.data!.data![index].id,
                         transaksiId: widget.transaksi,
                         refresh: () {
                           setState(() {});

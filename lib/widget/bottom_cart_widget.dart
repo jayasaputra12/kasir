@@ -8,7 +8,7 @@ import 'package:sizer/sizer.dart';
 import '../common/shared_code.dart';
 
 class BottomCartWidget extends StatelessWidget {
-   BottomCartWidget({
+  BottomCartWidget({
     this.totalBayar = 0,
     super.key,
   });
@@ -19,7 +19,7 @@ class BottomCartWidget extends StatelessWidget {
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
         if (state is CartLoaded) {
-          var _totalBayar = state.getCartModel.data!
+          var _totalBayar = state.getCartModel.data!.data!
               .map((e) =>
                   int.parse(e.productId!.priceUnit!) * int.parse(e.quantity!))
               .reduce((value, element) => value + element);

@@ -1,13 +1,11 @@
 import 'package:dropdown_search2/dropdown_search2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:kasir/common/shared_code.dart';
 import 'package:kasir/model/customer/get_customer_model.dart';
 import 'package:kasir/pages/transaksi/transaki_page.dart';
 import 'package:kasir/repositories/customer/customer_repository.dart';
-import 'package:kasir/repositories/product/product_repository.dart';
 import 'package:kasir/repositories/report/report_repository.dart';
 import 'package:kasir/widget/btn_primary.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -208,7 +206,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         .getCart(transaksiId: widget.transaksi!.id!),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        _totalHarga = snapshot.data!.data!.fold(
+                        _totalHarga = snapshot.data!.data!.data!.fold(
                             0,
                             (previousValue, element) =>
                                 previousValue +
@@ -217,11 +215,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         return ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: snapshot.data!.data!.length,
+                          itemCount: snapshot.data!.data!.data!.length,
                           itemBuilder: (context, index) {
                             return CardProductTransaksi(
-                              product: snapshot.data!.data![index].productId,
-                              qty: snapshot.data!.data![index].quantity!,
+                              product:
+                                  snapshot.data!.data!.data![index].productId,
+                              qty: snapshot.data!.data!.data![index].quantity!,
                             );
                           },
                         );
@@ -379,7 +378,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 .getCart(transaksiId: widget.transaksi!.id!),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                _totalHarga = snapshot.data!.data!.fold(
+                                _totalHarga = snapshot.data!.data!.data!.fold(
                                     0,
                                     (previousValue, element) =>
                                         previousValue +
@@ -388,7 +387,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             int.parse(element.quantity!)));
                                 return Text(
                                   SharedCode.convertToIdr(
-                                      snapshot.data!.data!.fold(
+                                      snapshot.data!.data!.data!.fold(
                                           0,
                                           (previousValue, element) =>
                                               previousValue +
@@ -467,7 +466,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             CartRepository()
                                 .getCart(transaksiId: widget.transaksi!.id!)
                                 .then((value) {
-                              value.data!.forEach((element) {
+                              value.data!.data!.forEach((element) {
                                 ReportRepository()
                                     .createReportCash(
                                   idTransaksi: widget.transaksi!.id!.toString(),
@@ -517,7 +516,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             CartRepository()
                                 .getCart(transaksiId: widget.transaksi!.id!)
                                 .then((value) {
-                              value.data!.forEach((element) {
+                              value.data!.data!.forEach((element) {
                                 ReportRepository()
                                     .createReportTempo(
                                   idTransaksi: widget.transaksi!.id!.toString(),

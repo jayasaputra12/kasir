@@ -5,9 +5,13 @@ import 'package:http/http.dart' as http;
 
 class TransactionRepository implements BaseTransactionRepository {
   @override
-  Future<CreateTransaksiModel> createTransaksi() async {
-    final res =
-        await http.post(Uri.parse("${SharedCode.baseUrl}/createTransaksi"));
+  Future<CreateTransaksiModel> createTransaksi({required int userId}) async {
+    final res = await http.post(
+      Uri.parse("${SharedCode.baseUrl}/createTransaksi"),
+      body: {
+        'user_id': userId.toString(),
+      },
+    );
 
     if (res.statusCode == 200) {
       return createTransaksiModelFromJson(res.body);

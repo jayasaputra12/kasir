@@ -32,7 +32,9 @@ class DashboardPage extends StatelessWidget {
                     onTap: () {
                       context.loaderOverlay.show();
                       TransactionRepository()
-                          .createTransaksi()
+                          .createTransaksi(
+                            userId: auth!.data!.user!.id!,
+                          )
                           .then((value) => {
                                 if (value.meta!.code == 200)
                                   {
