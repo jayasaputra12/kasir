@@ -95,173 +95,45 @@ class Data {
 class Datum {
     Datum({
         this.id,
-        this.productId,
-        this.customerId,
+        this.invoice,
+        this.status,
         this.userId,
-        this.idTransaksi,
-        this.quantitySale,
-        this.totalPrice,
-        this.payment,
-        this.paymentTerm,
         this.createdAt,
         this.updatedAt,
-        this.product,
-        this.customer,
-        this.user,
-        this.transaksi,
+        this.users,
     });
 
     int? id;
-    String? productId;
-    dynamic customerId;
+    String? invoice;
+    String? status;
     String? userId;
-    String? idTransaksi;
-    String? quantitySale;
-    String? totalPrice;
-    String? payment;
-    String? paymentTerm;
     String? createdAt;
     String? updatedAt;
-    Product? product;
-    dynamic customer;
-    User? user;
-    Transaksi? transaksi;
+    Users? users;
 
     factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
-        productId: json["product_id"],
-        customerId: json["customer_id"],
-        userId: json["user_id"],
-        idTransaksi: json["id_transaksi"],
-        quantitySale: json["quantity_sale"],
-        totalPrice: json["total_price"],
-        payment: json["payment"],
-        paymentTerm: json["payment_term"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        product: json["product"] == null ? null : Product.fromJson(json["product"]),
-        customer: json["customer"],
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
-        transaksi: json["transaksi"] == null ? null : Transaksi.fromJson(json["transaksi"]),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "product_id": productId,
-        "customer_id": customerId,
-        "user_id": userId,
-        "id_transaksi": idTransaksi,
-        "quantity_sale": quantitySale,
-        "total_price": totalPrice,
-        "payment": payment,
-        "payment_term": paymentTerm,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
-        "product": product?.toJson(),
-        "customer": customer,
-        "user": user?.toJson(),
-        "transaksi": transaksi?.toJson(),
-    };
-}
-
-class Product {
-    Product({
-        this.id,
-        this.categoryId,
-        this.nameProduct,
-        this.priceUnit,
-        this.priceModal,
-        this.photoProduct,
-        this.description,
-        this.codeUnique,
-        this.photoBarcode,
-        this.createdAt,
-        this.updatedAt,
-    });
-
-    int? id;
-    String? categoryId;
-    String? nameProduct;
-    String? priceUnit;
-    String? priceModal;
-    String? photoProduct;
-    String? description;
-    String? codeUnique;
-    String? photoBarcode;
-    String? createdAt;
-    String? updatedAt;
-
-    factory Product.fromJson(Map<String, dynamic> json) => Product(
-        id: json["id"],
-        categoryId: json["category_id"],
-        nameProduct: json["name_product"],
-        priceUnit: json["price_unit"],
-        priceModal: json["price_modal"],
-        photoProduct: json["photo_product"],
-        description: json["description"],
-        codeUnique: json["code_unique"],
-        photoBarcode: json["photo_barcode"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "category_id": categoryId,
-        "name_product": nameProduct,
-        "price_unit": priceUnit,
-        "price_modal": priceModal,
-        "photo_product": photoProduct,
-        "description": description,
-        "code_unique": codeUnique,
-        "photo_barcode": photoBarcode,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
-    };
-}
-
-class Transaksi {
-    Transaksi({
-        this.id,
-        this.idTransaksi,
-        this.status,
-        this.imageReceipt,
-        this.description,
-        this.createdAt,
-        this.updatedAt,
-    });
-
-    int? id;
-    String? idTransaksi;
-    String? status;
-    String? imageReceipt;
-    dynamic description;
-    String? createdAt;
-    String? updatedAt;
-
-    factory Transaksi.fromJson(Map<String, dynamic> json) => Transaksi(
-        id: json["id"],
-        idTransaksi: json["id_transaksi"],
+        invoice: json["invoice"],
         status: json["status"],
-        imageReceipt: json["image_receipt"],
-        description: json["description"],
+        userId: json["user_id"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
+        users: json["users"] == null ? null : Users.fromJson(json["users"]),
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
-        "id_transaksi": idTransaksi,
+        "invoice": invoice,
         "status": status,
-        "image_receipt": imageReceipt,
-        "description": description,
+        "user_id": userId,
         "created_at": createdAt,
         "updated_at": updatedAt,
+        "users": users?.toJson(),
     };
 }
 
-class User {
-    User({
+class Users {
+    Users({
         this.id,
         this.name,
         this.email,
@@ -284,12 +156,12 @@ class User {
     String? telp;
     String? address;
     String? avatar;
-    dynamic cabang;
-    dynamic priceKas;
+    String? cabang;
+    String? priceKas;
     String? createdAt;
     String? updatedAt;
 
-    factory User.fromJson(Map<String, dynamic> json) => User(
+    factory Users.fromJson(Map<String, dynamic> json) => Users(
         id: json["id"],
         name: json["name"],
         email: json["email"],

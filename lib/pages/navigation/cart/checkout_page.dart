@@ -33,7 +33,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
   bool _tempo = false;
   int _uangKembali = 0;
   int _totalHarga = 0;
-  int? _idPenjualan;
   DateTime now = DateTime.now();
 
   @override
@@ -155,11 +154,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            Text(
-                              selectedCustomer?.address ?? '',
-                              style: GoogleFonts.inter(
-                                fontSize: 12.sp,
-                                color: const Color(0xff97969E),
+                            Expanded(
+                              child: Text(
+                                selectedCustomer?.address ?? '',
+                                style: GoogleFonts.inter(
+                                  fontSize: 12.sp,
+                                  color: const Color(0xff97969E),
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
