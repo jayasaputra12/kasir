@@ -1,3 +1,4 @@
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:dropdown_search2/dropdown_search2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,6 +35,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   int _uangKembali = 0;
   int _totalHarga = 0;
   DateTime now = DateTime.now();
+  String? tanggalTempo;
 
   @override
   void initState() {
@@ -326,6 +328,46 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ],
                   ),
                   const SizedBox(height: 10),
+                  _tempo
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Tanggal Tempo*",
+                              style: GoogleFonts.inter(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            DateTimePicker(
+                              style: GoogleFonts.inter(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                              fieldHintText: 'Tanggal Tempo',
+                              type: DateTimePickerType.date,
+                              timePickerEntryModeInput: true,
+                              dateMask: 'yyyy-MM-dd',
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                              icon: const Icon(Icons.event),
+                              dateLabelText: 'Date',
+                              timeLabelText: "Hour",
+                              onChanged: (val) {
+                                setState(() {
+                                  tanggalTempo = val;
+                                  print(tanggalTempo);
+                                });
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        )
+                      : const SizedBox(),
                   Text(
                     "Uang Customer*",
                     style: GoogleFonts.inter(
@@ -524,9 +566,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   idTransaksi: widget.transaksi!.id!.toString(),
                                   customerId: selectedCustomer!.id.toString(),
                                   payment: "TEMPO",
-                                  paymentTerm: DateFormat('yyyy-MM-dd')
-                                      .format(now)
-                                      .toString(),
+                                  paymentTerm: tanggalTempo,
                                   productId: element.productId!.id!.toString(),
                                   quantitySale: element.quantity!,
                                   userId:
