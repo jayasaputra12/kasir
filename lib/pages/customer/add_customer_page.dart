@@ -23,6 +23,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
   final TextEditingController _namaController = TextEditingController();
   final TextEditingController _nohpController = TextEditingController();
   final TextEditingController _alamatController = TextEditingController();
+  final TextEditingController _uangController = TextEditingController();
   File? _image;
   bool _isLoading = false;
   @override
@@ -109,6 +110,11 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
               label: 'Alamat',
               controller: _alamatController,
             ),
+            const SizedBox(height: 20),
+            TextFieldCustom(
+              label: 'Limit Uang',
+              controller: _uangController,
+            ),
             const SizedBox(height: 30),
             BtnPrimary(
               txtBtn: 'Simpan',
@@ -116,10 +122,12 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                 context.loaderOverlay.show();
                 CustomerRepository()
                     .createCustomer(
-                        nama: _namaController.text,
-                        nohp: _nohpController.text,
-                        alamat: _alamatController.text,
-                        photoKtp: _image!)
+                      nama: _namaController.text,
+                      nohp: _nohpController.text,
+                      alamat: _alamatController.text,
+                      photoKtp: _image!,
+                      limitMoney: _uangController.text,
+                    )
                     .then((value) => {
                           context.loaderOverlay.hide(),
                           if (value.meta!.code == 200)

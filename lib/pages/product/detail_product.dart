@@ -117,7 +117,9 @@ class _DetailProductPageState extends State<DetailProductPage> {
               ),
               child: Center(
                 child: Text(
-                  "KATEGORI - ${widget.data!.category!.nameCategory}",
+                  widget.data!.category != null
+                      ? "KATEGORI - ${widget.data!.category!.nameCategory}"
+                      : "KATEGORI - Tanpa Kategori",
                   style: GoogleFonts.inter(
                     fontSize: 10.sp,
                     color: Colors.white,

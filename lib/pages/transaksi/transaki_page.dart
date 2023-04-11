@@ -14,50 +14,62 @@ class TransaksiPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.loaderOverlay.hide();
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/images/transaksi_done.png',
-                width: MediaQuery.of(context).size.width * 0.5,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DashboardPage(
+                auth: auth,
               ),
-              Text(
-                'TRANSAKSI BERHASIL',
-                style: GoogleFonts.inter(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF1D1E3C),
+            ));
+        return false;
+      },
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/transaksi_done.png',
+                  width: MediaQuery.of(context).size.width * 0.5,
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                "transaksi berhasil silahkan cetak invoice anda di bawah ini",
-                style: GoogleFonts.inter(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF1D1E3C),
+                Text(
+                  'TRANSAKSI BERHASIL',
+                  style: GoogleFonts.inter(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFF1D1E3C),
+                  ),
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              BtnPrimary(
-                txtBtn: "Back to Home",
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DashboardPage(
-                          auth: auth,
-                        ),
-                      ));
-                },
-              ),
-            ],
+                const SizedBox(height: 10),
+                Text(
+                  "transaksi berhasil silahkan cetak invoice anda di bawah ini",
+                  style: GoogleFonts.inter(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFF1D1E3C),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                BtnPrimary(
+                  txtBtn: "Back to Home",
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DashboardPage(
+                            auth: auth,
+                          ),
+                        ));
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

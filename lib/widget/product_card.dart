@@ -61,7 +61,9 @@ class ProductCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  data!.category != null ? data!.category!.nameCategory! : "",
+                  data!.category != null
+                      ? data!.category!.nameCategory!
+                      : "Tanpa Kategori",
                   style: GoogleFonts.inter(
                     fontSize: 12.sp,
                     color: const Color(0xff8D92A3),

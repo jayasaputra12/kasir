@@ -491,120 +491,135 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   BtnPrimary(
                     txtBtn: "Bayar Sekarang",
                     onPressed: () {
-                      if (_uangCustomer.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Uang customer tidak boleh kosong'),
-                          ),
-                        );
-                      } else {
-                        if (_uangKembali < 0) {
+                      if (selectedCustomer != null) {
+                        if (_uangCustomer.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Uang customer tidak cukup'),
+                              content: Text('Uang customer tidak boleh kosong'),
                             ),
                           );
                         } else {
-                          if (_chas) {
-                            context.loaderOverlay.show();
-                            CartRepository()
-                                .getCart(transaksiId: widget.transaksi!.id!)
-                                .then((value) {
-                              value.data!.data!.forEach((element) {
-                                ReportRepository()
-                                    .createReportCash(
-                                  idTransaksi: widget.transaksi!.id!.toString(),
-                                  payment: "CHAS",
-                                  paymentTerm: DateFormat('yyyy-MM-dd')
-                                      .format(now)
-                                      .toString(),
-                                  productId: element.productId!.id!.toString(),
-                                  quantitySale: element.quantity!,
-                                  userId:
-                                      widget.auth!.data!.user!.id!.toString(),
-                                )
-                                    .catchError((e) {
-                                  context.loaderOverlay.hide();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Gagal'),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                });
-                                ReportRepository().updateStok(
-                                  idProduct: element.productId!.stock![0].id
-                                      .toString(),
-                                  decrease: element.quantity!.toString(),
-                                );
-                                ReportRepository().terjualStok(
-                                  idProduct: element.productId!.penjualan![0].id
-                                      .toString(),
-                                  increase: element.quantity!.toString(),
-                                );
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => TransaksiPage(
-                                        auth: widget.auth,
-                                      ),
-                                    ));
-                              });
-                            }).catchError((e) {
-                              print(e);
-                            });
-                            // print(
-                            //     "tanggal :${DateFormat('EEEE, dd MMMM yyyy').format(now)}");
+                          if (_uangKembali < 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Uang customer tidak cukup'),
+                              ),
+                            );
                           } else {
-                            context.loaderOverlay.show();
-                            CartRepository()
-                                .getCart(transaksiId: widget.transaksi!.id!)
-                                .then((value) {
-                              value.data!.data!.forEach((element) {
-                                ReportRepository()
-                                    .createReportTempo(
-                                  idTransaksi: widget.transaksi!.id!.toString(),
-                                  customerId: selectedCustomer!.id.toString(),
-                                  payment: "TEMPO",
-                                  paymentTerm: tanggalTempo,
-                                  productId: element.productId!.id!.toString(),
-                                  quantitySale: element.quantity!,
-                                  userId:
-                                      widget.auth!.data!.user!.id!.toString(),
-                                )
-                                    .catchError((e) {
-                                  context.loaderOverlay.hide();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Gagal'),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                });
-                                ReportRepository().updateStok(
-                                  idProduct: element.productId!.stock![0].id
-                                      .toString(),
-                                  decrease: element.quantity!.toString(),
-                                );
-                                ReportRepository().terjualStok(
-                                  idProduct: element.productId!.penjualan![0].id
-                                      .toString(),
-                                  increase: element.quantity!.toString(),
-                                );
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => TransaksiPage(
-                                        auth: widget.auth,
+                            if (_chas) {
+                              context.loaderOverlay.show();
+                              CartRepository()
+                                  .getCart(transaksiId: widget.transaksi!.id!)
+                                  .then((value) {
+                                value.data!.data!.forEach((element) {
+                                  ReportRepository()
+                                      .createReportCash(
+                                    idTransaksi:
+                                        widget.transaksi!.id!.toString(),
+                                    payment: "CHAS",
+                                    paymentTerm: DateFormat('yyyy-MM-dd')
+                                        .format(now)
+                                        .toString(),
+                                    productId:
+                                        element.productId!.id!.toString(),
+                                    quantitySale: element.quantity!,
+                                    userId:
+                                        widget.auth!.data!.user!.id!.toString(),
+                                  )
+                                      .catchError((e) {
+                                    context.loaderOverlay.hide();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Gagal'),
+                                        backgroundColor: Colors.red,
                                       ),
-                                    ));
+                                    );
+                                  });
+                                  ReportRepository().updateStok(
+                                    idProduct: element.productId!.stock![0].id
+                                        .toString(),
+                                    decrease: element.quantity!.toString(),
+                                  );
+                                  ReportRepository().terjualStok(
+                                    idProduct: element
+                                        .productId!.penjualan![0].id
+                                        .toString(),
+                                    increase: element.quantity!.toString(),
+                                  );
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => TransaksiPage(
+                                          auth: widget.auth,
+                                        ),
+                                      ));
+                                });
+                              }).catchError((e) {
+                                print(e);
                               });
-                            }).catchError((e) {
-                              print(e);
-                            });
-                            ;
+                              // print(
+                              //     "tanggal :${DateFormat('EEEE, dd MMMM yyyy').format(now)}");
+                            } else {
+                              context.loaderOverlay.show();
+                              CartRepository()
+                                  .getCart(transaksiId: widget.transaksi!.id!)
+                                  .then((value) {
+                                value.data!.data!.forEach((element) {
+                                  ReportRepository()
+                                      .createReportTempo(
+                                    idTransaksi:
+                                        widget.transaksi!.id!.toString(),
+                                    customerId: selectedCustomer!.id.toString(),
+                                    payment: "TEMPO",
+                                    paymentTerm: tanggalTempo,
+                                    productId:
+                                        element.productId!.id!.toString(),
+                                    quantitySale: element.quantity!,
+                                    userId:
+                                        widget.auth!.data!.user!.id!.toString(),
+                                  )
+                                      .catchError((e) {
+                                    context.loaderOverlay.hide();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Gagal'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  });
+                                  ReportRepository().updateStok(
+                                    idProduct: element.productId!.stock![0].id
+                                        .toString(),
+                                    decrease: element.quantity!.toString(),
+                                  );
+                                  ReportRepository().terjualStok(
+                                    idProduct: element
+                                        .productId!.penjualan![0].id
+                                        .toString(),
+                                    increase: element.quantity!.toString(),
+                                  );
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => TransaksiPage(
+                                          auth: widget.auth,
+                                        ),
+                                      ));
+                                });
+                              }).catchError((e) {
+                                print(e);
+                              });
+                              ;
+                            }
                           }
                         }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            duration: Duration(milliseconds: 500),
+                            content: Text('Customer tidak boleh kosong'),
+                          ),
+                        );
                       }
                     },
                   )

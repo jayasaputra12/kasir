@@ -13,7 +13,8 @@ class CustomerRepository implements BaseCustomerRepositories {
       {required String nama,
       required String nohp,
       required String alamat,
-      required File photoKtp}) async {
+      required File photoKtp,
+      required String limitMoney}) async {
     Map<String, String> headers = {
       'Content-Type': 'multipart/form-data',
     };
@@ -24,6 +25,8 @@ class CustomerRepository implements BaseCustomerRepositories {
         'name_customer': nama,
         'phone': nohp,
         'address': alamat,
+        'activate':'aktif',
+        'limit_money': limitMoney,
       })
       ..files
           .add(await http.MultipartFile.fromPath('photo_ktp', photoKtp.path));

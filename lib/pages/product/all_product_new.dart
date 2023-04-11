@@ -5,6 +5,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kasir/model/auth/auth_model.dart';
 import 'package:kasir/model/product/product_model.dart';
 import 'package:kasir/model/transaction/create_transaksi_model.dart';
+import 'package:kasir/pages/product/detail_product.dart';
 import 'package:kasir/repositories/product/product_repository.dart';
 import 'package:kasir/widget/product_card.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -183,8 +184,40 @@ class _NewAllProductState extends State<NewAllProduct> {
                   pagingController: _pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Datum>(
                     itemBuilder: (context, item, index) {
-                      return ProductCard(
-                        data: item,
+                      return InkWell(
+                        onTap: () {
+                          // if (item.category == null) {
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //     const SnackBar(
+                          //       content: Text('Category tidak ada'),
+                          //     ),
+                          //   );
+                          // } else {
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => DetailProductPage(
+                          //         transaksi: widget.transaksi,
+                          //         data: item,
+                          //         auth: widget.auth,
+                          //       ),
+                          //     ),
+                          //   );
+                          // }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailProductPage(
+                                transaksi: widget.transaksi,
+                                data: item,
+                                auth: widget.auth,
+                              ),
+                            ),
+                          );
+                        },
+                        child: ProductCard(
+                          data: item,
+                        ),
                       );
                     },
                   ),
