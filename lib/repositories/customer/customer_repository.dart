@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:kasir/common/shared_code.dart';
 import 'package:kasir/model/customer/create_customer_model.dart';
 import 'package:kasir/model/customer/get_customer_model.dart';
+import 'package:kasir/model/customer/update_customer_model.dart';
 import 'package:kasir/repositories/customer/base_customer_repositories.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,7 +26,7 @@ class CustomerRepository implements BaseCustomerRepositories {
         'name_customer': nama,
         'phone': nohp,
         'address': alamat,
-        'activate':'aktif',
+        'activate': 'aktif',
         'limit_money': limitMoney,
       })
       ..files
@@ -48,13 +49,30 @@ class CustomerRepository implements BaseCustomerRepositories {
   }
 
   Future<GetCustomerModel> getCustomer() async {
-    var response = await http.get(Uri.parse('${SharedCode.baseUrl}/getDataCustomer'));
+    var response =
+        await http.get(Uri.parse('${SharedCode.baseUrl}/getDataCustomer'));
 
     if (response.statusCode == 200) {
-      GetCustomerModel getCustomerModel = getCustomerModelFromJson(response.body);
+      GetCustomerModel getCustomerModel =
+          getCustomerModelFromJson(response.body);
       return getCustomerModel;
     } else {
       throw Exception('Gagal mendapatkan data customer');
+    }
+  }
+
+  Future<UpdateCustomerModel> updateCustomer(
+      {int? limitMoney, String? id}) async {
+    var response = await http.post(
+        Uri.parse('${SharedCode.baseUrl}/updateDataCustomer/$id'),
+        body: {'limit_money': limitMoney.toString()});
+
+    if (response.statusCode == 200) {
+      UpdateCustomerModel updateCustomerModel =
+          updateCustomerModelFromJson(response.body);
+      return updateCustomerModel;
+    } else {
+      throw Exception('Gagal update data customer');
     }
   }
 }
